@@ -1,6 +1,6 @@
 from main import *
 
-# def StockUpdate(db):
+# def UpdateDB(from_db,to_db):
     # Update stock from existing db
     # Abhi and John
 

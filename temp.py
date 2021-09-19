@@ -8,5 +8,14 @@ stock_db = {
     '0007':{'name':'Marinol','qty':15,'cost':100},
     '0008':{'name':'Penicillin','qty':17,'cost':400},
     '0009':{'name':'Digoxin','qty':27,'cost':350},
-    '0010':{'name':'Vinblastine','qty':8,'cost':600},
-            }
+    '0010':{'name':'Vinblastine','qty':8,'cost':600}
+}
+
+stock_update_db = {
+    '0004':{'name':'Heparin','qty':20,'cost':700},
+    '0007':{'name':'Marinol','qty':10,'cost':100},
+    '0001':{'name':'Paracetamol','qty':10,'cost':375},
+    '0010':{'name':'Vinblastine','qty':10,'cost':600}
+    '0011':{'name':'Fentanyl','qty':90,'cost':300},
+    '0015':{'name':'Acetylsalicylic acid','qty':10,'cost':420},
+}
