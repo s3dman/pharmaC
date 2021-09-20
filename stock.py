@@ -28,7 +28,7 @@ def ReadStockFile(file):
         reader = csv.reader(csvfile)
         next(reader)
         for i in reader:
-            data.append([int(j.strip()) if j.strip().isnumeric() and j!=i[0] else j.strip() for j in i])
+            data.append([int(j) if j.strip().isnumeric() and j!=i[0] else j.strip() for j in i])
     for i in data:
         data_dict[i[0]] = [i[1],i[2],i[3]]
     return data_dict
