@@ -1,4 +1,4 @@
-from main import *
+fom main import *
 import csv
 
 # def UpdateDB(from_db,to_db):
