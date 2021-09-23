@@ -6,7 +6,7 @@ def Today():
     today= datetime.datetime.now()
     return [today.strftime("%d-%m-%y"),today.strftime("%X")]
 
-def FinalBill(purchase_list,main_db):
+def FinalBill(purchase_list,main_db,tax):
     totalcost = 0
     for i in purchase_list:
         count = 0
@@ -15,7 +15,7 @@ def FinalBill(purchase_list,main_db):
         costperitem = count*main_db[i[0]][-1]
         i.append(costperitem)
         totalcost += costperitem
-    purchase_list.append(totalcost)
+    purchase_list.append([totalcost,totalcost*tax])
     return purchase_list
 
 def AddUserLogs(name,purchase_list,userlogdb):
