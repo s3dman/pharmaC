@@ -1,10 +1,20 @@
 from main import *
 import csv
+import datetime
 
 #   Helper Functions
 def DateSorter(date):
     date = [int(i) for i in date[0].split('-')]
     return (date[1]*100)+date[0]
+
+def IsExpired(date):
+    td = datetime.date.today()
+    d = [int(i) for i in date.split('-')]
+    if d[1]<td.year:
+        return True
+    if d[1] == td.year and d[0]<=td.month:
+        return True
+    return False
 
 def CleanDB(db):
     for item_id in db:
@@ -58,11 +68,11 @@ def BulkAdd(from_dict,to_dict):
 def BulkRemove(from_dict,to_dict):
     rlist = []
     for i in from_dict:
-        rlist.append(ItemRemove(i,from_dict[i][1],to_dict))
+        rlist.append([i,ItemRemove(i,from_dict[i][1],to_dict)])
     return rlist
 
 # Read csv file and return a dict return different types of dicts for add and remove
-def ReadBulkFile(file,):
+def ReadBulkFile(file):
     data = []
     data_dict = {}
     with open(file,'r') as csvfile:
