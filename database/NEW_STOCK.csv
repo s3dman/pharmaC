@@ -1,7 +1,7 @@
-ID, NAME, QTY, COST 
-0004, Heparin, 20, 700
-0007, Marinol, 10, 100
-0001, Paracetamol, 10, 375
-0010, Vinblastine, 10, 600
-0011, Fentanyl, 90, 300
-0015, Acetylsalicylic acid, 10, 420
+ID, NAME, QTY, EXPIRY, COST 
+I004, Heparin, 20, 11-2021, 700
+I007, Marinol, 10, 11-2021, 100
+I001, Paracetamol, 10, 11-2021, 375
+I010, Vinblastine, 10, 11-2021, 600
+I011, Fentanyl, 90, 11-2021, 300
+I015, Acetylsalicylic acid, 10, 11-2021, 420

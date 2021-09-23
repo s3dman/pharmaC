@@ -1,7 +1,8 @@
 * Billing:
 	- step by step user input
+	- prescription billing
 	- final edit purchase
-	- generate bulk order from db/csv
+	- generate bulk order from db/csv(all orders are to be considered as bulk orders at checkout)
 	- tax options and discounts
 * Inventory with item update features:
 	- search for items
@@ -14,5 +15,5 @@
 	- store logs of each person with dates
 	- append stuff to each person(associated with a userid)
 * Reports(with d/m/w/y ly sales) and maybe graphs
-	- brand/item based sales reports
+	- item based sales reports
 	- graph generation for the above(preferably in terminal)
