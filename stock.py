@@ -18,10 +18,11 @@ def IsExpired(date):
 
 def CleanDB(db):
     #   clean DB with expired stuff
-    for ID in db:
-        for i in db[ID][1]:
-            if IsExpired(i):
-                del db[ID][1][i]
+    # for ID in db:
+    #     for i in db[ID][1]:
+    #         if IsExpired(i):
+    #             del db[ID][1][i]
+
     #   remove stock with 0 qty
     for item_id in db:
         for i in list(db[item_id][1].items()):
