@@ -1,7 +1,8 @@
 from main import *
 import time
 from os import system, name
-def clear():
+
+def Clear():
     if name == 'nt': _ = system('cls')
     else: _ = system('clear')
 
@@ -35,7 +36,7 @@ def LoadingScreen():
 {Prepend}|____/ |_____||____/    |_|    |_| |_| \__,_||_|   |_| |_| |_| \__,_|\n\n""")
         print(f"{Prepend}LOADING: [{'#'*i+' '*(58-i)}]")
         time.sleep(0.05)
-        clear()
+        Clear()
 
     HomePage()
 
