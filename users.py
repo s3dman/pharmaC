@@ -1,5 +1,3 @@
-from main import *
-from stock import *
 import datetime
 
 def Today():

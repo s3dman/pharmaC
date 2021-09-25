@@ -1,6 +1,7 @@
-from main import *
 import time
 from os import system, name
+
+import billingpage
 
 def Clear():
     if name == 'nt': _ = system('cls')
@@ -24,9 +25,9 @@ def tabulate(header,data,printheader=True,linesbetweenrows=False,prependspace=0)
             print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
     if linesbetweenrows == False: print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
 
-Prepend = ' '*8
 
 def LoadingScreen():
+    Prepend = ' '*8
     for i in range(58):
         print(f"""
 {Prepend} ____   _____  ____      ____   _
@@ -35,12 +36,10 @@ def LoadingScreen():
 {Prepend} ___) || |___ | |_| |   |  __/ | | | || (_| || |   | | | | | || (_| |
 {Prepend}|____/ |_____||____/    |_|    |_| |_| \__,_||_|   |_| |_| |_| \__,_|\n\n""")
         print(f"{Prepend}LOADING: [{'#'*i+' '*(58-i)}]")
-        time.sleep(0.05)
+        time.sleep(0.001)
         Clear()
 
-    HomePage()
-
-def HomePage():
+def HomePage(db):
     print("Type the option you want to choose and press Enter:")
     tabulate(
         "Option Service".split(),
@@ -48,21 +47,25 @@ def HomePage():
             "1 Billing".split(),
             "2 Inventory".split(),
             "3 Management".split(),
+            "4 Reports".split(),
             "0 Quit".split(),
         ],
         linesbetweenrows=True,
     )
     def takeinput():
         x = input("❯ ")
-        if x in "1 2 3 0".split():
+        if x in "1 2 3 4 0".split():
             if x == '1':
-                # BillingPage()
-                pass
+                Clear()
+                billingpage.primaryinput(db)
             if x == '2':
                 # InventoryPage()
                 pass
             if x == '3':
                 # ManagementPage()
+                pass
+            if x == '4':
+                # ReportPage()
                 pass
             if x == '0':
                 return

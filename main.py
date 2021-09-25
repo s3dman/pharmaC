@@ -1,4 +1,7 @@
 import pickle
+from pprint import pprint
+import os
+import glob
 
 # To read and write data into .DB files
 def WriteDB(db,file):
@@ -10,6 +13,6 @@ def ReadDB(file):
         db = pickle.load(db_file)
         return db
 
-def PP(db):
-    for i in db:
-        print(f"{i}:{db[i]}")
+def CheckLocalFiles():
+    files = [i for i in os.listdir("FILES") if i.endswith(".csv")]
+    return files

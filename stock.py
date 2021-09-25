@@ -1,4 +1,3 @@
-from main import *
 import csv
 import datetime
 
@@ -22,6 +21,7 @@ def CleanDB(db):
     #     for i in db[ID][1]:
     #         if IsExpired(i):
     #             del db[ID][1][i]
+
 
     #   remove stock with 0 qty
     for item_id in db:

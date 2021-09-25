@@ -1,5 +1,3 @@
-from main import *
-from stock import *
 from difflib import SequenceMatcher
 import datetime
 

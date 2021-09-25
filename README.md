@@ -1,6 +1,6 @@
 * UI:
 	- [x] tabulated ui
-	- [ ] step by step user input
+	- [x] step by step user input
 	- [ ] prescription billing
 	- [ ] final edit purchase
 	- [ ] tax options and discounts
@@ -14,6 +14,7 @@
 	- [x] check expiry
 	- [ ] get expired items list
 	- [ ] remove expired
+	- [ ] is prescribed or not?
 	- [x] Global value like tax etc updating
 	- [x] Logfile
 * Purchase history:
