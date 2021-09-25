@@ -70,4 +70,3 @@ def HomePage():
             print("Invalid syntax, Try again:")
             takeinput()
     takeinput()
-LoadingScreen()
