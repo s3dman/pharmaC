@@ -1,5 +1,4 @@
 * UI:
-	- https://github.com/LalanaChami/Pharmacy-Mangment-System
 	- step by step user input
 	- prescription billing
 	- final edit purchase
