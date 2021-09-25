@@ -41,7 +41,7 @@ def LoadingScreen():
     HomePage()
 
 def HomePage():
-    print("Type the option you want to choose and press Enter:\n")
+    print("Type the option you want to choose and press Enter:")
     tabulate(
         "Option Service".split(),
         [
@@ -52,4 +52,22 @@ def HomePage():
         ],
         linesbetweenrows=True,
     )
+    def takeinput():
+        x = input("❯ ")
+        if x in "1 2 3 0".split():
+            if x == '1':
+                # BillingPage()
+                pass
+            if x == '2':
+                # InventoryPage()
+                pass
+            if x == '3':
+                # ManagementPage()
+                pass
+            if x == '0':
+                return
+        else:
+            print("Invalid syntax, Try again:")
+            takeinput()
+    takeinput()
 LoadingScreen()
