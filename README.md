@@ -4,7 +4,6 @@
 	- [ ] prescription billing
 	- [ ] final edit purchase
 	- [ ] tax options and discounts
-	- [ ] Graph Generation
 * Billing:
 	- [x] generate bulk order from db/csv(all orders are to be considered as bulk orders at checkout)
 * Inventory with item update features:
@@ -20,5 +19,5 @@
 * Purchase history:
 	- [x] store logs of each person with dates
 * Reports
-	- [ ] item based sales reports
+	- [ ] item/overall sale reports
 	- [ ] graph generation for sales reports
