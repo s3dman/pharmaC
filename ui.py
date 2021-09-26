@@ -36,28 +36,16 @@ def LoadingScreen():
 {Prepend} ___) || |___ | |_| |   |  __/ | | | || (_| || |   | | | | | || (_| |
 {Prepend}|____/ |_____||____/    |_|    |_| |_| \__,_||_|   |_| |_| |_| \__,_|\n\n""")
         print(f"{Prepend}LOADING: [{'#'*i+' '*(58-i)}]")
-        time.sleep(0.001)
+        time.sleep(0.05)
         Clear()
 
 def HomePage(db):
-    print("Type the option you want to choose and press Enter:")
-    tabulate(
-        "Option Service".split(),
-        [
-            "1 Billing".split(),
-            "2 Inventory".split(),
-            "3 Management".split(),
-            "4 Reports".split(),
-            "0 Quit".split(),
-        ],
-        linesbetweenrows=True,
-    )
     def takeinput():
         x = input("❯ ")
         if x in "1 2 3 4 0".split():
             if x == '1':
                 Clear()
-                billingpage.primaryinput(db)
+                billingpage.FinalEditOption(db)
             if x == '2':
                 # InventoryPage()
                 pass
@@ -68,8 +56,24 @@ def HomePage(db):
                 # ReportPage()
                 pass
             if x == '0':
-                return
+                return -1
         else:
             print("Invalid syntax, Try again:")
             takeinput()
-    takeinput()
+    while True:
+        print("Type the option you want to choose and press Enter [0-4]:")
+        tabulate(
+            "Option Service".split(),
+            [
+                "1 Billing".split(),
+                "2 Inventory".split(),
+                "3 Management".split(),
+                "4 Reports".split(),
+                "0 Quit".split(),
+            ],
+            linesbetweenrows=True,
+        )
+        if takeinput() == -1:
+            Clear()
+            break
+        Clear()

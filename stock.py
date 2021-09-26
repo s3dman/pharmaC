@@ -6,6 +6,7 @@ def DateSorter(date):
     date = [int(i) for i in date[0].split('-')]
     return (date[1]*100)+date[0]
 
+#   check if date is expired
 def IsExpired(date):
     td = datetime.date.today()
     d = [int(i) for i in date.split('-')]
@@ -15,15 +16,26 @@ def IsExpired(date):
         return True
     return False
 
+# Get dict of expired stuff
+def GetExpired(db):
+    expireddb = {}
+    for ID in db:
+        x = {}
+        for i in db[ID][1]:
+            if IsExpired(i):
+                x.update({i:db[ID][1][i]})
+        expireddb.update({ID:[db[ID][0],x]})
+    return expireddb
+
+#   Remove expired stuff
+def RemoveExpired(db):
+    for ID in db:
+        for i in db[ID][1]:
+            if IsExpired(i):
+                del db[ID][1][i]
+
+#   remove stock with 0 qty
 def CleanDB(db):
-    #   clean DB with expired stuff
-    # for ID in db:
-    #     for i in db[ID][1]:
-    #         if IsExpired(i):
-    #             del db[ID][1][i]
-
-
-    #   remove stock with 0 qty
     for item_id in db:
         for i in list(db[item_id][1].items()):
             if i[1] <= 0:
@@ -75,22 +87,27 @@ def BulkAdd(from_dict,to_dict):
 def BulkRemove(from_dict,to_dict):
     rlist = []
     for i in from_dict:
-        rlist.append([i,ItemRemove(i,from_dict[i][1],to_dict)])
+        rlist.append([i,to_dict[i][0],to_dict[i][-1],ItemRemove(i,from_dict[i][1],to_dict)])
     return rlist
 
-# Read csv file and return a dict return different types of dicts for add and remove
+# Read csv file and return a dict return different types of dicts for add and remove if invalid csv is passed returns -1
 def ReadBulkFile(file):
     data = []
     data_dict = {}
     with open(file,'r') as csvfile:
         reader = csv.reader(csvfile)
-        column_len = len(next(reader))
+        try:
+            column_len = len(next(reader))
+        except StopIteration:
+            return -1
         for i in reader:
             data.append([int(j) if j.strip().isnumeric() else j.strip() for j in i])
         if column_len == 5:
             for i in data:
                 data_dict[i[0]] = [i[1],{i[3]:i[2]},i[4]]
-        else:
+        elif column_len == 3:
             for i in data:
                 data_dict[i[0]] = [i[1],i[2]]
-    return data_dict
+        else:
+            data_dict = -1
+    return (column_len,data_dict)
