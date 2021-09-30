@@ -27,6 +27,7 @@
 	- [x] Logfile
 * Purchase history:
 	- [x] store logs of each person with dates
-* Reports
+* Reports:
 	- [ ] item/overall sale reports
 	- [ ] graph generation for sales reports
+* Ideas: https://github.com/LalanaChami/Pharmacy-Mangment-System
