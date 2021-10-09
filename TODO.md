@@ -1,3 +1,4 @@
+* [Documentation]([[./README.md]])
 * UI:
 	- [x] tabulated ui
 	- [x] step by step user input
@@ -7,8 +8,8 @@
 	- [ ] expired show and remove option
 	- [x] tax options
 	- [ ] discounts
-	- [ ] prescription billing
 	- [ ] Show suffix for price
+	- [ ] Password login for admin pages
 * Billing:
 	- [x] generate bulk order from db/csv(all orders are to be considered as bulk orders at checkout)
 	- [ ] zero item clear fix for items
@@ -22,7 +23,6 @@
 	- [x] check expiry
 	- [x] get expired items list
 	- [x] remove expired
-	- [ ] is prescribed or not?
 	- [x] Global value like tax etc updating
 	- [x] Logfile
 * Purchase history:
