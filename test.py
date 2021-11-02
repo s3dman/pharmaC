@@ -8,5 +8,4 @@ from users import *
 db = ReadDB('STOCK.DB')
 LoadingScreen()
 HomePage(db)
-WriteDB(db,'sed.DB')
 
