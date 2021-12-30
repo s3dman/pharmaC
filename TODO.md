@@ -12,8 +12,8 @@
 	- [ ] Password login for admin pages
 * Billing:
 	- [x] generate bulk order from db/csv(all orders are to be considered as bulk orders at checkout)
-	- [ ] zero item clear fix for items
 	- [x] csv file error handle for bulk order
+	- [ ] save main db after each transaction
 	- [ ] csv file error handle for stock add
 * Inventory with item update features:
 	- [x] search for items using name and get ID
@@ -22,11 +22,13 @@
 	- [x] stock updating from csv
 	- [x] check expiry
 	- [x] get expired items list
-	- [x] remove expired
-	- [x] Global value like tax etc updating
+	- [ ] remove expired
+	- [ ] Global value like tax etc updating
 	- [x] Logfile
+	- [ ] implementation of the above
 * Purchase history:
-	- [x] store logs of each person with dates
+	- [x] store purchase histoy of each person with dates
+	- [x] way to access purchase history of induvigual and timely orders
 * Reports:
 	- [ ] item/overall sale reports
 	- [ ] graph generation for sales reports

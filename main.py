@@ -11,7 +11,7 @@ def WriteDB(db,file):
 def ReadDB(file):
     with open(f'./database/{file}','rb') as db_file:
         db = pickle.load(db_file)
-        return db
+    return db
 
 def CheckLocalFiles():
     files = [i for i in os.listdir("FILES") if i.endswith(".csv")]

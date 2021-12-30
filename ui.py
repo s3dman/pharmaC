@@ -2,6 +2,8 @@ import time
 from os import system, name
 
 import billingpage
+import inventorypage
+import userhistorypage
 
 def Clear():
     if name == 'nt': _ = system('cls')
@@ -47,12 +49,13 @@ def HomePage(db):
                 Clear()
                 billingpage.FinalEditOption(db)
             if x == '2':
-                # InventoryPage()
-                pass
+                inventorypage.MainPage(db)
             if x == '3':
                 # ManagementPage()
                 pass
             if x == '4':
+                userhistorypage.MainPage()
+            if x == '5':
                 # ReportPage()
                 pass
             if x == '0':
@@ -68,7 +71,8 @@ def HomePage(db):
                 "1 Billing".split(),
                 "2 Inventory".split(),
                 "3 Management".split(),
-                "4 Reports".split(),
+                "4,User History".split(','),
+                "5 Reports".split(),
                 "0 Quit".split(),
             ],
             linesbetweenrows=True,

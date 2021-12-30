@@ -1,9 +1,9 @@
-from management import SearchWithName
+from management import SearchWithName, Logger
 from ui import tabulate, Clear
 from main import CheckLocalFiles
 from stock import ReadBulkFile, BulkRemove
-from users import FinalBill
-from main import ReadDB
+from users import FinalBill, AddUserLogs
+from main import ReadDB, WriteDB
 from pprint import pprint
 import datetime
 
@@ -147,7 +147,6 @@ def FinalEditOption(db):
                     print("Invalid input, try again")
                     return qtyPrompt(maxqty)
                 if x==0:
-                    # TODO
                     pass
                 if x>maxqty:
                     print(f"Not enough available, taking maximum available: {maxqty}")
@@ -234,6 +233,16 @@ def FinalEditOption(db):
                 y_Y.append(["","","",i[0],i[1],"",""])
             y_Y.append(["","","","","","",""])
         billprint(x_X,y_Y,name,finalbill[-1],tax)
+
+        # User history store
+        userdb = ReadDB('USERS.DB')
+        AddUserLogs(name,expblk,userdb)
+
+        # IMPORTANT WRITE USER LOGS
+        WriteDB(userdb,'USERS.DB') 
+
+        # Logging
+        Logger('Transaction made')
         input("Press Enter to go to main menu")
     else:
         return
