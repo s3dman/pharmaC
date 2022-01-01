@@ -14,9 +14,6 @@ def SearchWithName(name,db):
             similar.append(i)
     return similar
 
-def GlobalValueUpdater(valuedb,db):
-    db.update(valuedb)
-
 def Logger(msg):
     with open('database/database.log','a') as file:
         file.write(f"[{datetime.datetime.now()}] {msg}\n")

@@ -59,15 +59,18 @@ def SearchByUser(udb):
     Clear()
     username = input('Enter Username that you want to check: ').title()
     templist = []
+    date_list = []
     for i in udb.items():
         for j in i[1].items():
             for k in j[1].items():
                 if k[0] == username:
                     templist.append(k[1])
+                    date_list.append([i[0],j[0]])
     if len(templist) == 0:
         print(f"No Transactions available for {username}.")
     else:
         print(f"{len(templist)} Transactions found: ")
+    counter = 0
     for finalbill in templist:
         tax = ReadDB("MANAGEMENT.DB")['tax']
         x_X = ['SNo', 'ID', 'Item', 'Expiry', 'Quantity', 'Rate', 'Net Price']
@@ -78,7 +81,8 @@ def SearchByUser(udb):
             for i in temp[1:]:
                 y_Y.append(["","","",i[0],i[1],"",""])
             y_Y.append(["","","","","","",""])
-        billprint(x_X,y_Y,username,finalbill[-1],tax)
+        billprint(x_X,y_Y,username,finalbill[-1],tax,date_list[counter])
+        counter += 1
         print()
     input("Press Enter to continue.")
 
@@ -86,19 +90,21 @@ def SearchByDate(udb):
     date = input('Enter date that you want to check[dd-mm-yy]: ')
     namelist = []
     billlist = []
+    date_list = []
     for i in udb.items():
         if i[0] == date:
             for j in i[1].items():
                 for k in j[1].items():
                     namelist.append(k[0])
                     billlist.append(k[1])
+                    date_list.append([i[0],j[0]])
     if len(namelist) == 0:
         print(f"No Transactions available for {date}.")
     else:
         print(f"{len(namelist)} Transactions found: ")
-    for i in range(len(namelist)):
-        finalbill=billlist[i]
-        username=namelist[i]
+    for k in range(len(namelist)):
+        finalbill=billlist[k]
+        username=namelist[k]
         tax = ReadDB("MANAGEMENT.DB")['tax']
         x_X = ['SNo', 'ID', 'Item', 'Expiry', 'Quantity', 'Rate', 'Net Price']
         y_Y = []
@@ -108,11 +114,11 @@ def SearchByDate(udb):
             for i in temp[1:]:
                 y_Y.append(["","","",i[0],i[1],"",""])
             y_Y.append(["","","","","","",""])
-        billprint(x_X,y_Y,username,finalbill[-1],tax)
+        billprint(x_X,y_Y,username,finalbill[-1],tax,date_list[k])
         print()
     input("Press Enter to continue.")
 
-def billprint(header,data,Name,z,tax,printheader=True,linesbetweenrows=False,prependspace=0):
+def billprint(header,data,Name,z,tax,dat,printheader=True,prependspace=0):
     widths = [len(cell) for cell in header]
     for row in data:
         for i, cell in enumerate(row):
@@ -123,7 +129,7 @@ def billprint(header,data,Name,z,tax,printheader=True,linesbetweenrows=False,pre
     print(prependspace*' '+"|"+"SED Pharma".center(wide," ")+"|")
     print(prependspace*' '+"|"+"~~~~~~~~~~".center(wide," ")+"|")
     # print(prependspace*' '+"|"+wide*" "+"|")
-    print(prependspace*' '+"| Customer: "+Name+(wide-len(Name)-33)*' '+f"{' / '.join(str(datetime.datetime.now())[:-7].split())} |")
+    print(prependspace*' '+"| Customer: "+Name+(wide-len(Name)-33)*' '+f"  {' / '.join(dat)} |")
     if printheader:
         print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
         print(prependspace*' '+'| '+formatted_row.format(*header)+' |')

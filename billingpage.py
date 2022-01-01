@@ -67,7 +67,13 @@ def PrimaryInput(db):
 
 
     # actual running here (above definitions)
-    customer_name = input("Customer name: ")
+    while True:
+        customer_name = input("Customer name: ")
+        if customer_name.isspace() or customer_name == "":
+            print("Invalid input, try again")
+        else:
+            customer_name = customer_name.title()
+            break
     isbulk = input("Bulk order (y/n): ").lower()
     if isbulk == 'y':
         input("Place bulk order list file inside the FILES directory ")

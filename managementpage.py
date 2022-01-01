@@ -1,11 +1,5 @@
-import time
 from os import system, name
-
-import billingpage
-import inventorypage
-import userhistorypage
-import reportpage
-import managementpage
+from main import ReadDB,WriteDB
 
 def Clear():
     if name == 'nt': _ = system('cls')
@@ -29,51 +23,28 @@ def tabulate(header,data,printheader=True,linesbetweenrows=False,prependspace=0)
             print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
     if linesbetweenrows == False: print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
 
-
-def LoadingScreen():
-    Prepend = ' '*8
-    for i in range(58):
-        print(f"""
-{Prepend} ____   _____  ____      ____   _
-{Prepend}/ ___| | ____||  _ \    |  _ \ | |__    __ _  _ __  _ __ ___    __ _
-{Prepend}\___ \ |  _|  | | | |   | |_) || '_ \  / _` || '__|| '_ ` _ \  / _` |
-{Prepend} ___) || |___ | |_| |   |  __/ | | | || (_| || |   | | | | | || (_| |
-{Prepend}|____/ |_____||____/    |_|    |_| |_| \__,_||_|   |_| |_| |_| \__,_|\n\n""")
-        print(f"{Prepend}LOADING: [{'#'*i+' '*(58-i)}]")
-        time.sleep(0.05)
-        Clear()
-
-def HomePage(db):
+def MainPage():
+    Clear()
     def takeinput():
         x = input("❯ ")
-        if x in "1 2 3 4 5 0".split():
+        if x in "1 2 0".split():
             if x == '1':
-                Clear()
-                billingpage.FinalEditOption(db)
+                TaxUpdate()
             if x == '2':
-                inventorypage.MainPage(db)
-            if x == '3':
-                managementpage.MainPage()
-            if x == '4':
-                userhistorypage.MainPage()
-            if x == '5':
-                reportpage.MainPage()
+                pass
             if x == '0':
                 return -1
         else:
             print("Invalid syntax, Try again:")
             takeinput()
     while True:
-        print("Type the option you want to choose and press Enter [0-4]:")
+        print("Type the option you want to choose and press Enter [0-2]:")
         tabulate(
             "Option Service".split(),
             [
-                "1 Billing".split(),
-                "2 Inventory".split(),
-                "3 Management".split(),
-                "4,User History".split(','),
-                "5 Reports".split(),
-                "0 Quit".split(),
+                "1,Edit tax value".split(','),
+                "2,Change access password".split(','),
+                "0,Go back".split(','),
             ],
             linesbetweenrows=True,
         )
@@ -81,3 +52,39 @@ def HomePage(db):
             Clear()
             break
         Clear()
+
+def TaxUpdate():
+    Clear()
+    dbfile = ReadDB('MANAGEMENT.DB')
+    tabulate(
+        "Option Service".split(),
+        [
+            ["Old tax value",dbfile["tax"]],
+        ],
+        printheader=False
+    )
+    while True:
+        tax = input("Input new tax percentage value: ")
+        if tax.isnumeric():
+            tax = int(tax)
+            break
+        else:
+            print("Invalid syntax, Try again:")
+
+    dbfile['tax'] = tax
+    tabulate(
+        "Option Service".split(),
+        [
+            ["New tax value",dbfile["tax"]],
+        ],
+        printheader=False
+    )
+    input("Press Enter to continue.")
+    WriteDB(dbfile,'MANAGEMENT.DB')
+
+
+def PasswordUpdate():
+    # TODO
+    Clear()
+    dbfile = ReadDB('MANAGEMENT.DB')
+    WriteDB(dbfile,'MANAGEMENT.DB')
