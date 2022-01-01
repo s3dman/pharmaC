@@ -1,20 +1,22 @@
 * [Documentation]([[./README.md]])
-* UI:
+* general:
 	- [x] tabulated ui
 	- [x] step by step user input
 	- [x] final edit purchase
 	- [x] bill page
 	- [x] tax options
 	- [x] Show suffix for price
+	- [ ] save main db after each transaction(in billingpage), each value update(in inventorypage) TODO
 * Billing:
 	- [x] generate bulk order from db/csv(all orders are to be considered as bulk orders at checkout)
 	- [x] csv file error handle for bulk order
-	- [ ] save main db after each transaction TODO
 * Inventory with item update features:
 	- [x] search for items using name and get ID
 	- [x] edit details(name and cost) of an item
+	- [x] inventory search
+	- [ ] list whole inventory
+	- [ ] Bulk add
 	- [ ] csv file error handle for stock add
-	- [ ] inventory search
 	- [ ] remove expired
 	- [ ] expired show and remove option
 * Management:
