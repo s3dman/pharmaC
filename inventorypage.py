@@ -47,6 +47,7 @@ def MainPage(db):
                 "1,Search and Edit".split(','),
                 "2,Bulk Add".split(','),
                 "3,Expired".split(','),
+                "0,Go back".split(','),
             ],
             linesbetweenrows=True,
         )
@@ -93,56 +94,6 @@ def SearchAndEditPage(db):
 
         drugindex = choicePrompt()-1  # relative inside templist
         print(f"You chose {templist[drugindex][2]}")
-
-        def operationPrompt():
-            Clear()
-            def takeinput():
-                x = input("❯ ")
-                if x in "1 2 3 0".split():
-                    if x == '1':
-                        SearchAndEditPage(db)
-                    if x == '2':
-                        pass
-                    if x == '3':
-                        pass
-                    if x == '0':
-                        return -1
-                else:
-                    print("Invalid syntax, Try again:")
-                    takeinput()
-            while True:
-                print("Type the option you want to Edit and press Enter [0-3]:")
-                tabulate(
-                    "Option Service".split(),
-                    [
-                        "1,ID".split(','),
-                        "2,Price".split(','),
-                        "3,Qty ".split(','),
-                    ],
-                    linesbetweenrows=True,
-                )
-                if takeinput() == -1:
-                    Clear()
-                    break
-                Clear()
-            
-        # def qtyPrompt():
-        #     x = input("Enter quantity: ")
-        #     if x.isnumeric():
-        #         x = int(x)
-        #         if x<=0:
-        #             print("Invalid input, try again")
-        #             return qtyPrompt()
-        #         if x>templist[drugindex][-1]:
-        #             print(f"Not enough available, taking maximum available: {templist[drugindex][-1]}")
-        #             return templist[drugindex][-1]
-        #         else:
-        #             return x
-        #     else:
-        #         print("Invalid input, try again")
-        #         return qtyPrompt()
-        # inputqty = qtyPrompt()
-        # drugslist[templist[drugindex][1]] = [templist[drugindex][2],inputqty]
 
     DrugPrompt()
     while True:

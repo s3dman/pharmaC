@@ -6,7 +6,6 @@
 	- [x] bill page
 	- [x] tax options
 	- [x] Show suffix for price
-	- [ ] Password login for admin pages
 * Billing:
 	- [x] generate bulk order from db/csv(all orders are to be considered as bulk orders at checkout)
 	- [x] csv file error handle for bulk order
@@ -24,11 +23,13 @@
 	- [x] get expired items list
 	- [x] Global value like tax etc updating
 	- [x] Logfile
+	- [ ] Password login for admin pages
 * Purchase history:
 	- [x] store purchase histoy of each person with dates
 	- [x] way to access purchase history of induvigual and timely orders
+	- [x] datefix
 * Reports:
-	- [x] item/overall sale reports
+	- [x] item bar graph sale reports
 	- [ ] graph generation for sales reports
 * Debugging:
 	- [ ] enter spam testing

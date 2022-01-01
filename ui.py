@@ -64,7 +64,7 @@ def HomePage(db):
             print("Invalid syntax, Try again:")
             takeinput()
     while True:
-        print("Type the option you want to choose and press Enter [0-4]:")
+        print("Type the option you want to choose and press Enter [0-5]:")
         tabulate(
             "Option Service".split(),
             [
