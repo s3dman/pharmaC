@@ -2,6 +2,7 @@ import time
 from os import system, name
 
 import billingpage
+from main import WriteDB
 import inventorypage
 import userhistorypage
 import reportpage
@@ -77,6 +78,10 @@ def HomePage(db):
             ],
             linesbetweenrows=True,
         )
+
+        # WriteDB(db,'STOCK.DB')
+        # TODO write important
+
         if takeinput() == -1:
             Clear()
             break
