@@ -238,6 +238,7 @@ def FinalEditOption(db):
             for i in temp[1:]:
                 y_Y.append(["","","",i[0],i[1],"",""])
             y_Y.append(["","","","","","",""])
+
         billprint(x_X,y_Y,name,finalbill[-1],tax)
 
         # User history store

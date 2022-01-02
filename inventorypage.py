@@ -2,6 +2,8 @@ from os import system, name
 from pprint import pprint
 from management import SearchWithName
 from main import ReadDB,WriteDB
+from stock import ReadBulkFile, BulkAdd as BulkAddToDB
+from main import CheckLocalFiles
 
 def Clear():
     if name == 'nt': _ = system('cls')
@@ -33,13 +35,12 @@ def MainPage(db):
             if x == '1':
                 SearchAndEditPage(db)
             if x == '2':
-                # view fuill db
-                pass
+                WholeInventory(db)
             if x == '3':
-                # bulk add
-                pass
+                BulkAdd(db)
+            if x == '4':
+                Expired(db)
             if x == '0':
-                # search and delete/export expired
                 return -1
         else:
             print("Invalid syntax, Try again:")
@@ -162,21 +163,43 @@ def SearchAndEditPage(db):
                 else:
                     print("Invalid syntax, Try again:")
             
-            # debugging
-            print(dat)
-            input()
-            # TODO change qty in main db
-            exp_list[choice-1][2] = int(newqty)
+            dat[1][exp_list[choice-1][1]] = int(newqty)
+
             tabulate(
                 "Option Value".split(),
                 [
-                    ["New Qty",exp_list[choice-1][2]],
+                    ["New Qty",dat[1][exp_list[choice-1][1]]],
                 ],
                 printheader=False
             )
             input("Press Enter to continue.")
             return -1
-            
+
+        def priceEdit():
+            dat = db[templist[drugindex][1]]
+            Clear()
+            tabulate(
+                "Option Value".split(),
+                [
+                    ["Old Price",dat[2]],
+                ],
+                printheader=False
+            )
+            while True:
+                newname = input("Input new price: ")
+                if newname.isnumeric():
+                    break
+                else:
+                    print("Invalid syntax, Try again:")
+            dat[2] = int(newname)
+            tabulate(
+                "Option Value".split(),
+                [
+                    ["New price",dat[2]],
+                ],
+                printheader=False
+            )
+            input("Press Enter to continue.")
 
         def takeinput():
             x = input("❯ ")
@@ -186,7 +209,7 @@ def SearchAndEditPage(db):
                 if x == '2':
                     return qtyEdit()
                 if x == '3':
-                    pass
+                    return priceEdit()
             else:
                 print("Invalid syntax, Try again:")
                 takeinput()
@@ -209,11 +232,89 @@ def SearchAndEditPage(db):
     # actual running here
     DrugPrompt()
     
-def BulkAdd():
-    pass
+def BulkAdd(db):
+    Clear()
+    input("Place bulk import file inside the FILES directory ")
+    files = CheckLocalFiles()
+    print(f"{len(files)} Results found:")
+    tabulate(
+        ["SNo.","File",],
+        [[files.index(i)+1,i] for i in files],
+        linesbetweenrows = True
+    )
 
-def Expired():
-    pass
+    def BulkPrompt():
+        y = input(f"Enter your choice [1-{len(files)}]: ")
+        if y.isnumeric():
+            y = int(y)
+            if y not in range(1,len(files)+1):
+                print("Invalid input, try again")
+                return BulkPrompt()
+            else:
+                bulkdb = ReadBulkFile(f"FILES/{files[y-1]}")
+                if bulkdb != -1:
+                    if bulkdb[0] == 5:
+                        return files[y-1]
+                    else:
+                        print("Invalid file, try again")
+                        return BulkPrompt()
+                else:
+                    print("Invalid file, try again")
+                    return BulkPrompt()
+        else:
+            print("Invalid input, try again")
+            return BulkPrompt()
+    filename = BulkPrompt()
+    Clear()
+    print(f"You have chosen {filename}")
+    adddb = ReadBulkFile(f"FILES/{filename}")[1] # ignore linter
+    temp_list = []
+    counter = 0
+    for i in adddb:
+        for j in adddb[i][1]:
+            temp_list.append([counter+1,i,adddb[i][0],j,adddb[i][1][j],adddb[i][-1]])
+        counter += 1
+    tabulate("SNo ID Name Expiry Qty Cost".split(),temp_list)
+    BulkAddToDB(adddb,db)
+    input(f"Successfully added {len(adddb)} items. Press Enter to continue.")
 
-def WholeInventory():
+def WholeInventory(db):
+    Clear()
+    header = "ID Name Expiry Qty Cost".split()
+    data = []
+    for i in db.items():
+        curstuf = list(i[1][1].items())
+        data.append([i[0],i[1][0],curstuf[0][0],str(curstuf[0][1]),i[1][-1]])
+        for j in curstuf[1:]:
+            data.append([" "," ",j[0],str(j[1])," "])
+
+    widths = [len(cell) for cell in header]
+    for row in data:
+        for i, cell in enumerate(row):
+            widths[i] = max(len(str(cell)), widths[i])
+    formatted_row = ' | '.join('{:%d}' % width for width in widths)
+    wide = len('-'*(len(formatted_row.format(*header))+2))
+    print('+'+'='*(len(formatted_row.format(*header))+2)+'+')
+    print("|"+"Inventory".center(wide," ")+"|")
+    print('+'+'-'*(len(formatted_row.format(*header))+2)+'+')
+    print('| '+formatted_row.format(*header)+' |')
+    print('+'+'='*(len(formatted_row.format(*header))+2)+'+')
+    print('| '+formatted_row.format(*data[0])+' |')
+    for row in data[1:-1]:
+        if row[0] == " ":
+            print('| '+formatted_row.format(*row)+' |')
+        else:
+            print('+'+'-'*(len(formatted_row.format(*header))+2)+'+')
+            print('| '+formatted_row.format(*row)+' |')
+    if data[-1][0] == " ":
+        print('| '+formatted_row.format(*data[-1])+' |')
+    else:
+        print('+'+'-'*(len(formatted_row.format(*header))+2)+'+')
+        print('| '+formatted_row.format(*data[-1])+' |')
+    print('+'+'='*(len(formatted_row.format(*header))+2)+'+')
+
+    input("Press Enter to continue.")
+
+def Expired(db):
+    print('sedaaki')
     pass

@@ -13,10 +13,10 @@
 * Inventory with item update features:
 	- [x] search for items using name and get ID
 	- [x] edit details(name and cost) of an item
-	- [x] inventory search
-	- [ ] list whole inventory
-	- [ ] Bulk add
-	- [ ] csv file error handle for stock add
+	- [x] inventory search and edit name, qty,
+	- [x] list whole inventory
+	- [x] Bulk add
+	- [ ] csv file error handle for stock add ??
 	- [ ] remove expired
 	- [ ] expired show and remove option
 * Management:
