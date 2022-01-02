@@ -31,7 +31,7 @@ def MainPage():
             if x == '1':
                 TaxUpdate()
             if x == '2':
-                pass
+                PasswordUpdate()
             if x == '0':
                 return -1
         else:
@@ -84,7 +84,24 @@ def TaxUpdate():
 
 
 def PasswordUpdate():
-    # TODO
     Clear()
     dbfile = ReadDB('MANAGEMENT.DB')
+    tabulate(
+        "Option Service".split(),
+        [
+            ["Old password",dbfile["password"]],
+        ],
+        printheader=False
+    )
+    pas = input("Input new password: ")
+
+    dbfile['password'] = pas
+    tabulate(
+        "Option Service".split(),
+        [
+            ["New password",dbfile["password"]],
+        ],
+        printheader=False
+    )
+    input("Press Enter to continue.")
     WriteDB(dbfile,'MANAGEMENT.DB')

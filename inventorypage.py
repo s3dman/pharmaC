@@ -2,7 +2,7 @@ from os import system, name
 from pprint import pprint
 from management import SearchWithName
 from main import ReadDB,WriteDB
-from stock import ReadBulkFile, BulkAdd as BulkAddToDB
+from stock import ReadBulkFile, BulkAdd as BulkAddToDB, GetExpired
 from main import CheckLocalFiles
 
 def Clear():
@@ -316,5 +316,6 @@ def WholeInventory(db):
     input("Press Enter to continue.")
 
 def Expired(db):
-    print('sedaaki')
-    pass
+    sed = GetExpired(db)
+    pprint(sed)
+    input()
