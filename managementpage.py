@@ -1,5 +1,6 @@
 from os import system, name
 from main import ReadDB,WriteDB
+from authentication import Encoder, Decoder
 
 def Clear():
     if name == 'nt': _ = system('cls')
@@ -89,17 +90,17 @@ def PasswordUpdate():
     tabulate(
         "Option Service".split(),
         [
-            ["Old password",dbfile["password"]],
+            ["Old password",Decoder(dbfile["password"])],
         ],
         printheader=False
     )
     pas = input("Input new password: ")
 
-    dbfile['password'] = pas
+    dbfile['password'] = Encoder(pas)
     tabulate(
         "Option Service".split(),
         [
-            ["New password",dbfile["password"]],
+            ["New password",Decoder(dbfile["password"])],
         ],
         printheader=False
     )
