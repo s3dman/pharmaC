@@ -11,6 +11,7 @@
 * Billing:
 	- [x] generate bulk order from db/csv(all orders are to be considered as bulk orders at checkout)
 	- [x] csv file error handle for bulk order
+	- [ ] bulkadd dont try to buy items if already not in stock but in bulkadd-db
 * Inventory with item update features:
 	- [x] search for items using name and get ID
 	- [x] edit details(name and cost) of an item
