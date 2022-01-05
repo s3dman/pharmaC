@@ -9,6 +9,7 @@ from authentication import Login
 counter = 5
 while counter>0:
     if Login() != -1:
+        Clear()
         db = ReadDB('STOCK.DB')
         # LoadingScreen()
         HomePage(db)
