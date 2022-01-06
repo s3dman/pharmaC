@@ -1,4 +1,5 @@
 import csv
+from pprint import pprint
 import datetime
 
 #   Helper Functions
@@ -87,7 +88,8 @@ def BulkAdd(from_dict,to_dict):
 def BulkRemove(from_dict,to_dict):
     rlist = []
     for i in from_dict:
-        rlist.append([i,to_dict[i][0],to_dict[i][-1],ItemRemove(i,from_dict[i][1],to_dict)])
+        if i in to_dict:
+            rlist.append([i,to_dict[i][0],to_dict[i][-1],ItemRemove(i,from_dict[i][1],to_dict)])
     return rlist
 
 # Read csv file and return a dict return different types of dicts for add and remove if invalid csv is passed returns -1
