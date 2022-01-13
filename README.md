@@ -162,7 +162,11 @@
 		occurring when one module invokes the other module.
 
 # (6) CONCLUSION
-	The software for Pharmacy is found to be working efficiently. The software appears very flexible since it is menu driven with user-friendly screens. No Formal programming knowledge is required for the user. Also, the user is not burdened with data storing and data retrieval procedures as both are done internally. The user is able to manipulate data easily.
+	The software for Pharmacy is found to be working efficiently. The software
+	appears very flexible since it is menu driven with user-friendly screens.
+	No Formal programming knowledge is required for the user. Also, the user is
+	not burdened with data storing and data retrieval procedures as both are
+	done internally. The user is able to manipulate data easily.
 	
 # (7) REFERENCES
 	Learning Computer Science by Sumita Arora
