@@ -37,7 +37,7 @@
 		system which helps the user (Pharmacist) to manage the daily activities
 		in the pharmacy in an electronic format. It reduces the risk of paper
 		work such as loss of registers, damage of registers and other time
-		consuming activities in the library. It can help user to manage the
+		consuming activities in the pharmacy. It can help user to manage the
 		transaction or record more effectively and in a time saving manner. 
 		#TODO ippozhum books aayit aanu kedakkane change it to drugs stuff
 		
@@ -170,7 +170,19 @@
 		providing different set of test input. The primary objective is to test all the
 		modules in order to ensure that no errors are occurring when one module invokes
 		the other module.
+
 # (6) CONCLUSION
-	#TODO
+	The software for Pharmacy is found to be working efficiently. The software
+	appears very flexible since it is menu driven with user-friendly screens.
+	No Formal programming knowledge is required for the user. Also, the user is
+	not burdened with data storing and data retrieval procedures as both are
+	done internally. The user is able to get the data easily.
+	
 # (7) REFERENCES
-	#TODO
+	Learning Computer Science by Sumita Arora
+	Python Next Level by Neville Joseph Sabu
+	Mainly referred MJ's Brain
+	Psycho's Artistic skills for flowchart
+	John F Aradan and Akarsh's Silence
+	Prxni's Motivation
+	
