@@ -88,18 +88,8 @@
 		The following is the specification of the system on which the software has been developed:
 		System Specification:
 			- Operating System: Linux, MacOS, Windows 7/10/11
-				The software has been developed in Linux as it is very
-				versatile and provides a wide variety of tools for testing
-				and developing software. The software runs on almost all
-				Unix, Unix-like and Windows systems with minimal dependancies and overheads.
-			- Machine: Pentium Dual Core Processor 2.6 GHz or above, 2 GB
-				RAM or above ,500 GB Hard Disk or above. We used Intel core
-				i5 2nd generation based system, it is fast than other
-				processors and provide reliable and stable performance and we
-				can run our pc for longtime. By using this processor, we can
-				keep on developing our project without any worries. 4GB RAM
-				is used as it will provide fast reading and writing
-				capabilities and will support in processing.
+				The software has been developed in Linux as it is very versatile and provides a wide variety of tools for testing and developing software. The software runs on almost all Unix, Unix-like and Windows systems with minimal dependancies and overheads.
+			- Machine: Pentium Dual Core Processor 2.6 GHz or above, 2 GB RAM or above ,500 GB Hard Disk or above. We used Intel core i5 2nd generation based system, it is fast than other processors and provide reliable and stable performance and we can run our pc for longtime. By using this processor, we can keep on developing our project without any worries. 4GB RAM is used as it will provide fast reading and writing capabilities and will support in processing.
 		Software Specification: 
 			- Frontend used: Python 3.8+
 			- Backend used: Data Files(Binary,CSV,Text)
@@ -158,24 +148,21 @@
 	defects in our project. The program was subjected to a series of trial
 	operations with test inputs and various observations were made and based on
 	these observations, changes were made and again tested for better results.
-	Our Project went through two levels of testing Unit testing and Integration testing.
+	Our Project went through two levels of testing Unit testing and Integration
+	testing.
 
 	(5.1) UNIT TESTING:
-		Unit testing was undertaken when a module has been created and successfully
-		reviewed. In order to test a single module, we need to provide a complete
-		working environment.
+		Unit testing was undertaken when a module has been created and
+		successfully reviewed. In order to test a single module, we need to
+		provide a complete working environment.
 	(5.2) INTEGRATION TESTING:
-		After integrating the entire modules developed, we performed various checks by
-		providing different set of test input. The primary objective is to test all the
-		modules in order to ensure that no errors are occurring when one module invokes
-		the other module.
+		After integrating the entire modules developed, we performed various
+		checks by providing different set of test input. The primary objective
+		is to test all the modules in order to ensure that no errors are
+		occurring when one module invokes the other module.
 
 # (6) CONCLUSION
-	The software for Pharmacy is found to be working efficiently. The software
-	appears very flexible since it is menu driven with user-friendly screens.
-	No Formal programming knowledge is required for the user. Also, the user is
-	not burdened with data storing and data retrieval procedures as both are
-	done internally. The user is able to manipulate data easily.
+	The software for Pharmacy is found to be working efficiently. The software appears very flexible since it is menu driven with user-friendly screens. No Formal programming knowledge is required for the user. Also, the user is not burdened with data storing and data retrieval procedures as both are done internally. The user is able to manipulate data easily.
 	
 # (7) REFERENCES
 	Learning Computer Science by Sumita Arora
