@@ -39,6 +39,7 @@
 		work such as loss of registers, damage of registers and other time
 		consuming activities in the library. It can help user to manage the
 		transaction or record more effectively and in a time saving manner. 
+		#TODO ippozhum books aayit aanu kedakkane change it to drugs stuff
 		
 	(2.2) PROBLEM STATEMENT:
 		The problem occurred before having computerized system includes:
@@ -61,6 +62,7 @@
 				When records are stored as hard copy, the hard copy records/registers
 				would be required every year. This will increase the cost
 				for management of a Pharmacy.
+		#TODO ippozhum books aayit aanu kedakkane change it to drugs stuff
 
 	(2.3) EXISTING VS PROPOSED:
 		Existing System:
@@ -72,6 +74,7 @@
 			books to the catalogue is a very complex task. In addition to its
 			maintenance of member details, issue dates and return dates etc.
 			manually is a complex task.
+			#TODO ippozhum books aayit aanu kedakkane change it to drugs stuff
 		Proposed System: 
 			To solve the inconveniences as mentioned in the existing system, a
 			Digital Library is proposed. The proposed system contains the following features:
@@ -79,6 +82,7 @@
 				- Check total medicines available
 				- Update medicine details
 				- Produce medicine reports, etc..
+			#TODO ippozhum books aayit aanu kedakkane change it to drugs stuff
 	
 	(2.4) SYSTEM SPECIFICATIONS:
 		Hardware Specification:
@@ -99,6 +103,7 @@
 		Software Specification: 
 			- Frontend used: Python 3.8+
 			- Backend used: Data Files
+			#TODO idk ithrem mathiyo or some more changes veno
 
 # (3) SYSTEM DESIGN
 	(3.1) DATA FILE/TABLE DESIGN:
