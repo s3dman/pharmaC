@@ -84,7 +84,7 @@
 				- Produce medicine reports, etc..
 			#TODO ippozhum books aayit aanu kedakkane change it to drugs stuff
 	
-	(2.4) SYSTEM SPECIFICATIONS:
+	(2.4) HARDWARE & SOFTWARE SPECIFICATIONS:
 		The following is the specification of the system on which the software has been developed:
 		System Specification:
 			- Operating System: Linux, MacOS, Windows 7/10/11
