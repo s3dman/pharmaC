@@ -3,8 +3,9 @@ from pprint import pprint
 from os import system, name
 
 def Clear():
-    if name == 'nt': _ = system('cls')
-    else: _ = system('clear')
+    # if name == 'nt': _ = system('cls')
+    # else: _ = system('clear')
+    print("\n"*45)
 
 def tabulate(header,data,printheader=True,linesbetweenrows=False,prependspace=0):
     widths = [len(cell) for cell in header]
