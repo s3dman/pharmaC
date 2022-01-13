@@ -19,6 +19,7 @@
 	- [x] list whole inventory
 	- [x] Bulk add
 	- [ ] remove expired
+	- [x] remove expire function not working
 * Management:
 	- [x] stock updating from csv
 	- [x] check expiry

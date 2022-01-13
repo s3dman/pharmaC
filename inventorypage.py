@@ -2,7 +2,7 @@ from os import system, name
 from pprint import pprint
 from management import SearchWithName
 from main import ReadDB,WriteDB
-from stock import ReadBulkFile, BulkAdd as BulkAddToDB, GetExpired
+from stock import ReadBulkFile, BulkAdd as BulkAddToDB, GetExpired, RemoveExpired
 from main import CheckLocalFiles
 
 def Clear():
@@ -319,4 +319,8 @@ def WholeInventory(db):
 def Expired(db):
     sed = GetExpired(db)
     pprint(sed)
+    x = input("do you want to remove: ")
+    if x in "Yy":
+        db = RemoveExpired(db)
+    print(f"removed {len(sed)} entries.")
     input()

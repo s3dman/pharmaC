@@ -1,5 +1,6 @@
 import csv
 import datetime
+import copy
 
 #   Helper Functions
 def DateSorter(date):
@@ -29,10 +30,12 @@ def GetExpired(db):
 
 #   Remove expired stuff
 def RemoveExpired(db):
+    temp_db = copy.deepcopy(db)
     for ID in db:
         for i in db[ID][1]:
             if IsExpired(i):
-                del db[ID][1][i]
+                del temp_db[ID][1][i]
+    return temp_db
 
 #   remove stock with 0 qty
 def CleanDB(db):
