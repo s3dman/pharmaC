@@ -154,7 +154,7 @@
 	defects in our project. The program was subjected to a series of trial
 	operations with test inputs and various observations were made and based on
 	these observations, changes were made and again tested for better results.
-	Our Project went through two levels of testing 1-Unit testing, 2-Integration testing.
+	Our Project went through two levels of testing Unit testing and Integration testing.
 
 	(5.1) UNIT TESTING:
 		Unit testing was undertaken when a module has been created and successfully
