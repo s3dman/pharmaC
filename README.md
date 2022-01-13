@@ -85,25 +85,24 @@
 			#TODO ippozhum books aayit aanu kedakkane change it to drugs stuff
 	
 	(2.4) SYSTEM SPECIFICATIONS:
-		Hardware Specification:
-			The following is the hardware specification of the system on which the software has been developed:
-				- Operating System: Linux, MacOS, Windows 7/10/11
-					Windows  7  is  used  as  the  operating  system  as it
-					is  stable  and  supports  more features and is more
-					user friendly.
-					#TODO change bruh (in case udk i hate windoes)
-				- Machine: Pentium Dual Core Processor 2.6 GHz or above, 2 GB
-					RAM or above ,500 GB Hard Disk or above. We used Intel core
-				  	i5 2nd generation based system, it is fast than other
-				  	processors and provide reliable and stable performance and we
-				  	can run our pc for longtime. By using this processor, we can
-				  	keep on developing our project without any worries. 4GB RAM
-				  	is used as it will provide fast reading and writing
-				  	capabilities and will support in processing.
+		The following is the specification of the system on which the software has been developed:
+		System Specification:
+			- Operating System: Linux, MacOS, Windows 7/10/11
+				The software has been developed in Linux as it is very
+				versatile and provides a wide variety of tools for testing
+				and developing software. The software runs on almost all
+				Unix, Unix-like and Windows systems with minimal dependancies and overheads.
+			- Machine: Pentium Dual Core Processor 2.6 GHz or above, 2 GB
+				RAM or above ,500 GB Hard Disk or above. We used Intel core
+				i5 2nd generation based system, it is fast than other
+				processors and provide reliable and stable performance and we
+				can run our pc for longtime. By using this processor, we can
+				keep on developing our project without any worries. 4GB RAM
+				is used as it will provide fast reading and writing
+				capabilities and will support in processing.
 		Software Specification: 
 			- Frontend used: Python 3.8+
-			- Backend used: Data Files
-			#TODO idk ithrem mathiyo or some more changes veno
+			- Backend used: Data Files(Binary,CSV,Text)
 
 # (3) SYSTEM DESIGN
 	(3.1) DATA FILE/TABLE DESIGN:
@@ -176,13 +175,12 @@
 	appears very flexible since it is menu driven with user-friendly screens.
 	No Formal programming knowledge is required for the user. Also, the user is
 	not burdened with data storing and data retrieval procedures as both are
-	done internally. The user is able to get the data easily.
+	done internally. The user is able to manipulate data easily.
 	
 # (7) REFERENCES
 	Learning Computer Science by Sumita Arora
-	Python Next Level by Neville Joseph Sabu
+	sed by Neville Joseph Sabu
 	Mainly referred MJ's Brain
-	Psycho's Artistic skills for flowchart
+	Psycho's Artistic skills
 	John F Aradan and Akarsh's Silence
 	Prxni's Motivation
-	
