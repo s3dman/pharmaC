@@ -1,7 +1,5 @@
 import pickle
-from pprint import pprint
 import os
-import glob
 
 # To read and write data into .DB files
 def WriteDB(db,file):
