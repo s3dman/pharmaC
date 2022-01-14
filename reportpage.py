@@ -1,5 +1,4 @@
 from main import ReadDB
-from pprint import pprint
 from os import system, name
 
 def Clear():
@@ -25,18 +24,18 @@ def tabulate(header,data,printheader=True,linesbetweenrows=False,prependspace=0)
             print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
     if linesbetweenrows == False: print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
     
-def BarGrapher(data_):
+def BarGrapher(data_,header='Drug Sales Chart'):
     Clear()
     data = {}
     maxlen = max(max(len(i) for i in data_),5)
-    mindata = min(data_.values())
-    maxdata = max(data_.values())
+    mindata = int(min(data_.values()))
+    maxdata = int(max(data_.values()))
     for i in data_:
         data[i] = int((74-maxlen)*(data_[i]-mindata+1)/(maxdata-mindata+1))
         if data[i] <= 0:
             data[i] = 1
     print('+'+'='*80+'+')
-    print('| '+"Drug Sales Chart".center(79)+'|')
+    print('| '+header.center(79)+'|')
     print('+'+'='*(maxlen+2)+'+'+(77-maxlen)*'='+'+')
     for i in data:
         print('| '+i.rjust(maxlen)+' | '+"█"*data[i]+" "*(76-maxlen-data[i])+'|')
@@ -55,6 +54,11 @@ def BarGrapher(data_):
     input("Press Enter to continue.")
 
 
+def datesorter(y):
+    date = y[0]
+    x = [int(i) for i in date.split('-')]
+    return x[2]*10000+x[1]*100+x[0]
+
 def SalesGraph(userdb):
     temp_db = {}
     for i in userdb:
@@ -64,10 +68,7 @@ def SalesGraph(userdb):
                     temp_db[i] += userdb[i][j][k][-1][0]
                 else:
                     temp_db[i] = userdb[i][j][k][-1][0]
-    # cumulated daily sales reports
-    pprint(temp_db)
-    input()
-
+    BarGrapher(temp_db,'Sales Report')
 
 def MainPage():
     temp_db={}

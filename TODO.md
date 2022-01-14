@@ -33,4 +33,4 @@
 	- [x] datefix
 * Reports:
 	- [x] item bar graph sale reports
-	- [ ] graph generation for sales reports
+	- [x] graph generation for sales reports
