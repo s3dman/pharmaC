@@ -2,7 +2,7 @@ from os import system, name
 from pprint import pprint
 from management import SearchWithName
 from main import ReadDB,WriteDB
-from stock import ReadBulkFile, BulkAdd as BulkAddToDB, GetExpired, RemoveExpired
+from stock import ReadBulkFile, BulkAdd as BulkAddToDB, GetExpired, RemoveExpired, CleanDB
 from main import CheckLocalFiles
 
 def Clear():
@@ -317,10 +317,50 @@ def WholeInventory(db):
     input("Press Enter to continue.")
 
 def Expired(db):
-    sed = GetExpired(db)
-    pprint(sed)
-    x = input("do you want to remove: ")
-    if x in "Yy":
-        db = RemoveExpired(db)
-    print(f"removed {len(sed)} entries.")
-    input()
+    to_be_removed = GetExpired(db)
+    Clear()
+    header = "ID Name Expiry Qty".split()
+    data = []
+    for i in to_be_removed.items():
+        curstuf = list(i[1][1].items())
+        data.append([i[0],i[1][0],curstuf[0][0],str(curstuf[0][1])])
+        for j in curstuf[1:]:
+            data.append([" "," ",j[0],str(j[1])])
+    widths = [len(cell) for cell in header]
+    for row in data:
+        for i, cell in enumerate(row):
+            widths[i] = max(len(str(cell)), widths[i])
+    formatted_row = ' | '.join('{:%d}' % width for width in widths)
+    wide = len('-'*(len(formatted_row.format(*header))+2))
+    print('+'+'='*(len(formatted_row.format(*header))+2)+'+')
+    print("|"+"Expired".center(wide," ")+"|")
+    print('+'+'-'*(len(formatted_row.format(*header))+2)+'+')
+    print('| '+formatted_row.format(*header)+' |')
+    print('+'+'='*(len(formatted_row.format(*header))+2)+'+')
+    print('| '+formatted_row.format(*data[0])+' |')
+    for row in data[1:-1]:
+        if row[0] == " ":
+            print('| '+formatted_row.format(*row)+' |')
+        else:
+            print('+'+'-'*(len(formatted_row.format(*header))+2)+'+')
+            print('| '+formatted_row.format(*row)+' |')
+    if data[-1][0] == " ":
+        print('| '+formatted_row.format(*data[-1])+' |')
+    else:
+        print('+'+'-'*(len(formatted_row.format(*header))+2)+'+')
+        print('| '+formatted_row.format(*data[-1])+' |')
+    print('+'+'='*(len(formatted_row.format(*header))+2)+'+')
+
+    while True:
+        x = input("Proceed to removal [y/n]: ")
+        if x in "Yy":
+            RemoveExpired(db)
+            print(f"removed {len(data)} entries.")
+            break
+        elif x in "Nn":
+            print("No entries removed.")
+            break
+        else:
+            print("Invalid syntax, Try again:")
+    CleanDB(db)
+    input("Press Enter to continue.")

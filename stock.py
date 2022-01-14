@@ -30,12 +30,14 @@ def GetExpired(db):
 
 #   Remove expired stuff
 def RemoveExpired(db):
-    temp_db = copy.deepcopy(db)
+    # makeing copy of nested element instead of the whole element to avoid memory mismatch
+    # cross referencing insidee loop to avoid resizing while iterating
     for ID in db:
+        temp = db[ID][1].copy()
         for i in db[ID][1]:
             if IsExpired(i):
-                del temp_db[ID][1][i]
-    return temp_db
+                del temp[i]
+        db[ID][1] = temp
 
 #   remove stock with 0 qty
 def CleanDB(db):

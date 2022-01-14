@@ -64,24 +64,8 @@ def SalesGraph(userdb):
                     temp_db[i] += userdb[i][j][k][-1][0]
                 else:
                     temp_db[i] = userdb[i][j][k][-1][0]
-                # print(userdb[i][j][k][-1][0])
-        
-    # print(temp_db)
-    mindata = min(temp_db.values())
-    maxdata = max(temp_db.values())
-    for i in temp_db:
-        temp_db[i] = int(50*(temp_db[i]-mindata+1)/(maxdata-mindata+1))
-        if temp_db[i] <= 0:
-            temp_db[i] = 1
-    temp_matrix = []
-    print(temp_db)
-    for i in temp_db:
-        x = " "*temp_db[i]+"*"+" "*(100-temp_db[i])
-        print(x)
-        temp_matrix.append(x)
-        for j in range(int(100/len(i))):
-            temp_matrix.append(" "*100)
-    pprint(temp_matrix)
+    # cumulated daily sales reports
+    pprint(temp_db)
     input()
 
 
