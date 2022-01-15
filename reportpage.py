@@ -70,6 +70,10 @@ def SalesGraph(userdb):
 def MainPage():
     temp_db={}
     userdb = ReadDB('USERS.DB')
+    if len(userdb) == 0:
+        Clear()
+        input("Insufficent data available. Press enter to continue.")
+        return -1
     for i in userdb.items():
         for j in i[1].items():
             for k in j[1].items():

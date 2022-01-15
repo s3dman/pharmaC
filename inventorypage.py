@@ -79,10 +79,12 @@ def SearchAndEditPage(db):
                 templist.append([len(templist)+1,i,db[i][0]])
             if len(templist) == 0:
                 Clear()
-                print("No Results Found")
-                return DrugNameInput()
+                return -1
             return templist
         templist = DrugNameInput()
+        if templist == -1:
+            input("No results found. Press any key to continue.")
+            return -1
         Clear()
         print(f"{len(templist)} Results Found:")
         tabulate(
@@ -237,6 +239,7 @@ def SearchAndEditPage(db):
 
     # actual running here
     DrugPrompt()
+    CleanDB(db)
     
 # parser function before using BulkAdd to db function
 def BulkAdd(db):
@@ -291,6 +294,9 @@ def BulkAdd(db):
 # print out the whole inventory with details
 def WholeInventory(db):
     Clear()
+    if len(db) == 0:
+        input("No items found. Press Enter to continue.")
+        return
     header = "ID Name Expiry Qty Cost".split()
     data = []
     for i in db.items():
@@ -328,7 +334,12 @@ def WholeInventory(db):
 
 # expired remove ui
 def Expired(db):
+    Clear()
+    CleanDB(db)
     to_be_removed = GetExpired(db)
+    if len(to_be_removed) == 0:
+        input("No expired items found. Press Enter to continue.")
+        return
     Clear()
     header = "ID Name Expiry Qty".split()
     data = []

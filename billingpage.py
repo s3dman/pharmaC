@@ -8,6 +8,9 @@ import datetime
 
 # drug buy menu
 def PrimaryInput(db):
+    if len(db) == 0:
+        input("Stock empty. Press any key to continue.")
+        return -1
     drugslist = {}
     def DrugPrompt():
         Clear()
@@ -127,7 +130,11 @@ def PrimaryInput(db):
 
 # final bill editing menu
 def FinalEditOption(db):
-    temp,name = PrimaryInput(db)
+    sedvar = PrimaryInput(db)
+    if sedvar != -1:
+        temp,name = sedvar
+    else:
+        return -1
     print("Order summary:")
     order_db = []
     for i in temp:

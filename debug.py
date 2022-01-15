@@ -1,22 +1,17 @@
 # debug script for running unit tests
 
-import run
-import init
-import authentication
-import main
-import management
-import stock
-import users
-import ui
-import userhistorypage
-import managementpage
-import reportpage
-import billingpage
-import inventorypage
-import debug
+from pprint import pprint
 
-userdb = main.ReadDB('USERS.DB')
-managementdb = main.ReadDB('MANAGEMENT.DB')
-stockdb = main.ReadDB('STOCK.DB')
+from main import ReadDB, WriteDB
 
-reportpage.SalesGraph(userdb)
+userdb = ReadDB('USERS.DB')
+managementdb = ReadDB('MANAGEMENT.DB')
+stockdb = ReadDB('STOCK.DB')
+# WriteDB({},'USERS.DB')
+# WriteDB({},'STOCK.DB')
+WriteDB({'tax':0,'password':'�100�114�111�119�115�115�97�112'},'MANAGEMENT.DB')
+managementdb = ReadDB('MANAGEMENT.DB')
+
+# pprint(userdb)
+pprint(managementdb)
+pprint(stockdb)

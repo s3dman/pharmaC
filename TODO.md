@@ -15,6 +15,7 @@
 	- [x] bulkadd dont try to buy items if already not in stock but in bulkadd-db
 * Inventory with item update features:
 	- [x] search for items using name and get ID
+	- [ ] search with name go back
 	- [x] edit details(name and cost) of an item
 	- [x] inventory search and edit name, qty,
 	- [x] list whole inventory
