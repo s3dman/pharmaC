@@ -1,9 +1,11 @@
 import datetime
 
+# get formatted date
 def Today():
     today= datetime.datetime.now()
     return [today.strftime("%d-%m-%y"),today.strftime("%X")]
 
+# add user logs (name,purchased items) to userlogdb
 def AddUserLogs(name,purchase_list,userlogdb):
     name = name.strip().title()
     if Today()[0] in userlogdb:
@@ -11,6 +13,7 @@ def AddUserLogs(name,purchase_list,userlogdb):
     else:
         userlogdb[Today()[0]] = {Today()[1]:{name:purchase_list}}
 
+# purchase_list is modified to a format which can be parsed for bill generation
 def FinalBill(purchase_list,tax):
     totalcost = 0
     for i in purchase_list:

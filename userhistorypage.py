@@ -1,12 +1,11 @@
 from os import system, name
-import datetime
 from main import ReadDB
 
 def Clear():
     if name == 'nt': _ = system('cls')
     else: _ = system('clear')
-    # print("\n"*45)
 
+# modified tabulation ui for this use case
 def tabulate(header,data,printheader=True,linesbetweenrows=False,prependspace=0):
     widths = [len(cell) for cell in header]
     for row in data:
@@ -25,6 +24,7 @@ def tabulate(header,data,printheader=True,linesbetweenrows=False,prependspace=0)
             print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
     if linesbetweenrows == False: print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
 
+# main menu for user history page
 def MainPage():
     userdb = ReadDB('USERS.DB')
     Clear()
@@ -56,6 +56,7 @@ def MainPage():
             break
         Clear()
 
+# to get user purchases of a specified username
 def SearchByUser(udb):
     Clear()
     username = input('Enter Username that you want to check: ').title()
@@ -87,6 +88,7 @@ def SearchByUser(udb):
         print()
     input("Press Enter to continue.")
 
+# to get purchases of a specified date
 def SearchByDate(udb):
     date = input('Enter date that you want to check[dd-mm-yy]: ')
     namelist = []
@@ -119,6 +121,7 @@ def SearchByDate(udb):
         print()
     input("Press Enter to continue.")
 
+# print bill of each transaction found in SearchByUser and SearchByDate functions
 def billprint(header,data,Name,z,tax,dat,printheader=True,prependspace=0):
     widths = [len(cell) for cell in header]
     for row in data:
@@ -151,4 +154,3 @@ def billprint(header,data,Name,z,tax,dat,printheader=True,prependspace=0):
     print(prependspace*" "+f"| Tax [{tax}%]:"+" "*(wide-15-len(str(z[1])))+f"Rs {z[1]} |")
     print(prependspace*" "+"| Total cost after Tax:"+" "*(wide-26-len(str(z[1]+z[0])))+f"Rs {z[1]+z[0]} |")
     print(prependspace*' '+'+'+'='*(len(formatted_row.format(*header))+2)+'+')
-

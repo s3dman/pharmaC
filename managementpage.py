@@ -5,8 +5,8 @@ from authentication import Encoder, Decoder
 def Clear():
     if name == 'nt': _ = system('cls')
     else: _ = system('clear')
-    # print("\n"*45)
 
+# modified tabulation ui for this use case
 def tabulate(header,data,printheader=True,linesbetweenrows=False,prependspace=0):
     widths = [len(cell) for cell in header]
     for row in data:
@@ -25,6 +25,7 @@ def tabulate(header,data,printheader=True,linesbetweenrows=False,prependspace=0)
             print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
     if linesbetweenrows == False: print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
 
+# main menu for management page
 def MainPage():
     Clear()
     def takeinput():
@@ -55,6 +56,7 @@ def MainPage():
             break
         Clear()
 
+# update tax in MANAGEMENT.DB from user input
 def TaxUpdate():
     Clear()
     dbfile = ReadDB('MANAGEMENT.DB')
@@ -85,6 +87,7 @@ def TaxUpdate():
     WriteDB(dbfile,'MANAGEMENT.DB')
 
 
+# update password and store in MANAGEMENT.DB after encrypting
 def PasswordUpdate():
     Clear()
     dbfile = ReadDB('MANAGEMENT.DB')

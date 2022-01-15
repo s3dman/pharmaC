@@ -1,14 +1,13 @@
 import csv
 import datetime
-import copy
 
-#   Helper Functions
+# helper function to sort date
 def DateSorter(date):
     date = [int(i) for i in date[0].split('-')]
     return (date[1]*100)+date[0]
 
-#   check if date is expired
-def IsExpired(date):
+# to check if a date is expired by comparing with current date
+def IsExpired(date) :
     td = datetime.date.today()
     d = [int(i) for i in date.split('-')]
     if d[1]<td.year:
@@ -17,7 +16,7 @@ def IsExpired(date):
         return True
     return False
 
-# Get dict of expired stuff
+# get dict of expired stuff from db
 def GetExpired(db):
     expireddb = {}
     for ID in db:
@@ -28,10 +27,8 @@ def GetExpired(db):
         expireddb.update({ID:[db[ID][0],x]})
     return expireddb
 
-#   Remove expired stuff
+# remove all expired stuff from db
 def RemoveExpired(db):
-    # makeing copy of nested element instead of the whole element to avoid memory mismatch
-    # cross referencing insidee loop to avoid resizing while iterating
     for ID in db:
         temp = db[ID][1].copy()
         for i in db[ID][1]:
@@ -39,7 +36,7 @@ def RemoveExpired(db):
                 del temp[i]
         db[ID][1] = temp
 
-#   remove stock with 0 qty
+# remove all drug entries with qty<=0 from db
 def CleanDB(db):
     for item_id in db:
         for i in list(db[item_id][1].items()):
@@ -49,7 +46,7 @@ def CleanDB(db):
         if j[1][1] == {}:
             del db[j[0]]
 
-#   Add single item to db
+# add single item to db
 def ItemAdd(item_id,item_info,db):
     if item_id in db:
         for i in item_info[1]:
@@ -62,7 +59,7 @@ def ItemAdd(item_id,item_info,db):
     for j in db:
         db[j][1] = dict(sorted(db[j][1].items(),key=DateSorter))
 
-#   Remove single item from db
+# remove single item from db
 def ItemRemove(ID,qty,db):
     if ID in db:
         rdict = {}
@@ -81,14 +78,13 @@ def ItemRemove(ID,qty,db):
     else:
         return -1
 
-# There are differences between bulkadd and bulkremove dbs
-# BulkAddDB has ID, Name, Qty, Expiry, Cost
-# BulkRemoveDB has ID, Name, Qty
+# adds a dict of items (existant & non-existant) items to to_dict
 def BulkAdd(from_dict,to_dict):
     for i in from_dict:
         ItemAdd(i,from_dict[i],to_dict)
 
-#   Returns a list with dicts of expiry:qty if the item exists else -1
+# removes a dict of items (existant) from to_dict
+# returns a list with dicts of expiry:qty if the item exists else -1
 def BulkRemove(from_dict,to_dict):
     rlist = []
     for i in from_dict:
@@ -96,7 +92,8 @@ def BulkRemove(from_dict,to_dict):
             rlist.append([i,to_dict[i][0],to_dict[i][-1],ItemRemove(i,from_dict[i][1],to_dict)])
     return rlist
 
-# Read csv file and return a dict return different types of dicts for add and remove if invalid csv is passed returns -1
+# Read csv file and return a dict of items. different types of dicts are
+# returned based on row length. if invalid csv is passed returns -1
 def ReadBulkFile(file):
     data = []
     data_dict = {}

@@ -1,12 +1,14 @@
+- [x] run.py
+- [x] init.py
 - [x] authentication.py
 - [x] main.py
 - [x] management.py
-- [ ] run.py
-- [ ] stock.py
-- [ ] ui.py
-- [ ] users.py
-- [ ] userhistorypage.py
-- [ ] managementpage.py
-- [ ] reportpage.py
-- [ ] billingpage.py
-- [ ] inventorypage.py
+- [x] stock.py
+- [x] users.py
+- [x] ui.py
+- [x] userhistorypage.py
+- [x] managementpage.py
+- [x] reportpage.py
+- [x] billingpage.py
+- [x] inventorypage.py
+- [x] debug.py

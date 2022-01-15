@@ -4,8 +4,8 @@ from os import system, name
 def Clear():
     if name == 'nt': _ = system('cls')
     else: _ = system('clear')
-    # print("\n"*45)
 
+# modified tabulation ui for this use case
 def tabulate(header,data,printheader=True,linesbetweenrows=False,prependspace=0):
     widths = [len(cell) for cell in header]
     for row in data:
@@ -24,6 +24,7 @@ def tabulate(header,data,printheader=True,linesbetweenrows=False,prependspace=0)
             print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
     if linesbetweenrows == False: print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
     
+# print graph from graphing data provided
 def BarGrapher(data_,header='Drug Sales Chart'):
     Clear()
     data = {}
@@ -53,12 +54,7 @@ def BarGrapher(data_,header='Drug Sales Chart'):
     print('+'+'='*80+'+')
     input("Press Enter to continue.")
 
-
-def datesorter(y):
-    date = y[0]
-    x = [int(i) for i in date.split('-')]
-    return x[2]*10000+x[1]*100+x[0]
-
+# print date-wise salesgraph from userdb
 def SalesGraph(userdb):
     temp_db = {}
     for i in userdb:
@@ -70,6 +66,7 @@ def SalesGraph(userdb):
                     temp_db[i] = userdb[i][j][k][-1][0]
     BarGrapher(temp_db,'Sales Report')
 
+# main menu for report page
 def MainPage():
     temp_db={}
     userdb = ReadDB('USERS.DB')

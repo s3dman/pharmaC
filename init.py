@@ -6,6 +6,7 @@ from ui import *
 from users import *
 from authentication import Login
 
+# start database and authentication and proceed to loadingscreen & homepage if passed
 def initialize():
     counter = 5
     while counter>0:
@@ -21,5 +22,7 @@ def initialize():
                 print(f"Password incorrect! {counter} attempts remaining.")
     return 0
 
+# to avoid initialization call when externally importing
+# to be executed only when directly run 
 if __name__ == "__main__":
     initialize()

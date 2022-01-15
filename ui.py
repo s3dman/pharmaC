@@ -8,11 +8,12 @@ import userhistorypage
 import reportpage
 import managementpage
 
+# function to clear screen based on diff operating systems
 def Clear():
     if name == 'nt': _ = system('cls')
     else: _ = system('clear')
-    # print("\n"*45)
 
+# custom tabulation ui for printing tables
 def tabulate(header,data,printheader=True,linesbetweenrows=False,prependspace=0):
     widths = [len(cell) for cell in header]
     for row in data:
@@ -32,6 +33,7 @@ def tabulate(header,data,printheader=True,linesbetweenrows=False,prependspace=0)
     if linesbetweenrows == False: print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
 
 
+# loading screen print function
 def LoadingScreen():
     Prepend = ' '*8
     for i in range(58):
@@ -45,6 +47,8 @@ def LoadingScreen():
         time.sleep(0.05)
         Clear()
 
+# main home page menu
+# redirects to different sub-menus according to user input
 def HomePage(db):
     def takeinput():
         x = input("❯ ")

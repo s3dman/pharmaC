@@ -6,11 +6,12 @@ from users import FinalBill, AddUserLogs
 from main import ReadDB, WriteDB
 import datetime
 
+# drug buy menu
 def PrimaryInput(db):
-
     drugslist = {}
     def DrugPrompt():
         Clear()
+        # get drug name using SearchWithName
         def DrugNameInput():
             med = input("Drug name: ")
             templist = []
@@ -31,6 +32,7 @@ def PrimaryInput(db):
             "SNo.,ID,Name,Available".split(","),
             templist)
 
+        # selection menu for all search results of DrugNameInput
         def choicePrompt():
             choice = input(f"Enter your choice [1-{len(templist)}]:")
             if choice.isnumeric():
@@ -46,6 +48,7 @@ def PrimaryInput(db):
         drugindex = choicePrompt()-1  # relative inside templist
         print(f"You chose {templist[drugindex][2]}")
 
+        # qty prompt for entering order details of selected choice
         def qtyPrompt():
             x = input("Enter quantity: ")
             if x.isnumeric():
@@ -65,7 +68,7 @@ def PrimaryInput(db):
         drugslist[templist[drugindex][1]] = [templist[drugindex][2],inputqty]
 
 
-    # actual running here (above definitions)
+    # actual running here
     while True:
         customer_name = input("Customer name: ")
         if customer_name.isspace() or customer_name == "":
@@ -73,6 +76,7 @@ def PrimaryInput(db):
         else:
             customer_name = customer_name.title()
             break
+    # to check if bulk order or not
     isbulk = input("Bulk order (y/n): ").lower()
     if isbulk == 'y':
         input("Place bulk order list file inside the FILES directory ")
@@ -84,6 +88,7 @@ def PrimaryInput(db):
             linesbetweenrows = True
         )
 
+        # chose files for bulk add reading
         def BulkPrompt():
             y = input(f"Enter your choice [1-{len(files)}]: ")
             if y.isnumeric():
@@ -120,6 +125,7 @@ def PrimaryInput(db):
                 break
         return [drugslist,customer_name]
 
+# final bill editing menu
 def FinalEditOption(db):
     temp,name = PrimaryInput(db)
     print("Order summary:")
@@ -244,7 +250,6 @@ def FinalEditOption(db):
         userdb = ReadDB('USERS.DB')
         AddUserLogs(name,expblk,userdb)
 
-        # IMPORTANT WRITE USER LOGS
         WriteDB(userdb,'USERS.DB') 
 
         # Logging

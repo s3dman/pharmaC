@@ -8,8 +8,8 @@ from main import CheckLocalFiles
 def Clear():
     if name == 'nt': _ = system('cls')
     else: _ = system('clear')
-    # print("\n"*45)
 
+# modifed tabulate function for this use case
 def tabulate(header,data,printheader=True,linesbetweenrows=False,prependspace=0):
     widths = [len(cell) for cell in header]
     for row in data:
@@ -28,6 +28,7 @@ def tabulate(header,data,printheader=True,linesbetweenrows=False,prependspace=0)
             print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
     if linesbetweenrows == False: print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
 
+# inventory page main menu
 def MainPage(db):
     Clear()
     def takeinput():
@@ -66,10 +67,11 @@ def MainPage(db):
 
         WriteDB(db,'STOCK.DB')
 
-
+# search for drug and edit variables
 def SearchAndEditPage(db):
     def DrugPrompt():
         Clear()
+        # sequence matched drug name prompt
         def DrugNameInput():
             med = input("Drug name: ")
             templist = []
@@ -87,6 +89,7 @@ def SearchAndEditPage(db):
             "SNo.,ID,Name".split(","),
             templist)
 
+        # choice prompt for all entries from DrugNameInput
         def choicePrompt():
             choice = input(f"Enter your choice [1-{len(templist)}]:")
             if choice.isnumeric():
@@ -103,7 +106,7 @@ def SearchAndEditPage(db):
         Clear()
         print(f"You chose {templist[drugindex][2]}")
 
-        # Operation prompt
+        # operation prompt
         Clear()
         def nameEdit():
             dat = db[templist[drugindex][1]]
@@ -131,6 +134,7 @@ def SearchAndEditPage(db):
             )
             input("Press Enter to continue.")
 
+        # quantity edit option for selected drug
         def qtyEdit():
             dat = db[templist[drugindex][1]]
             exp_list = []
@@ -175,6 +179,7 @@ def SearchAndEditPage(db):
             input("Press Enter to continue.")
             return -1
 
+        # price edit option for selected drug
         def priceEdit():
             dat = db[templist[drugindex][1]]
             Clear()
@@ -201,6 +206,7 @@ def SearchAndEditPage(db):
             )
             input("Press Enter to continue.")
 
+        # menu for variable edit option
         def takeinput():
             x = input("❯ ")
             if x in "1 2 3".split():
@@ -232,7 +238,9 @@ def SearchAndEditPage(db):
     # actual running here
     DrugPrompt()
     
+# parser function before using BulkAdd to db function
 def BulkAdd(db):
+    # list local available files
     Clear()
     input("Place bulk import file inside the FILES directory ")
     files = CheckLocalFiles()
@@ -243,6 +251,7 @@ def BulkAdd(db):
         linesbetweenrows = True
     )
 
+    # prompt for chosing local files
     def BulkPrompt():
         y = input(f"Enter your choice [1-{len(files)}]: ")
         if y.isnumeric():
@@ -275,9 +284,11 @@ def BulkAdd(db):
             temp_list.append([counter+1,i,adddb[i][0],j,adddb[i][1][j],adddb[i][-1]])
         counter += 1
     tabulate("SNo ID Name Expiry Qty Cost".split(),temp_list)
+    # actually adding to DB
     BulkAddToDB(adddb,db)
     input(f"Successfully added {len(adddb)} items. Press Enter to continue.")
 
+# print out the whole inventory with details
 def WholeInventory(db):
     Clear()
     header = "ID Name Expiry Qty Cost".split()
@@ -315,6 +326,7 @@ def WholeInventory(db):
 
     input("Press Enter to continue.")
 
+# expired remove ui
 def Expired(db):
     to_be_removed = GetExpired(db)
     Clear()
@@ -350,6 +362,7 @@ def Expired(db):
         print('| '+formatted_row.format(*data[-1])+' |')
     print('+'+'='*(len(formatted_row.format(*header))+2)+'+')
 
+    # confirmation menu for removal
     while True:
         x = input("Proceed to removal [y/n]: ")
         if x in "Yy":
