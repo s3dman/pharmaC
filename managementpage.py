@@ -3,9 +3,9 @@ from main import ReadDB,WriteDB
 from authentication import Encoder, Decoder
 
 def Clear():
-    # if name == 'nt': _ = system('cls')
-    # else: _ = system('clear')
-    print("\n"*45)
+    if name == 'nt': _ = system('cls')
+    else: _ = system('clear')
+    # print("\n"*45)
 
 def tabulate(header,data,printheader=True,linesbetweenrows=False,prependspace=0):
     widths = [len(cell) for cell in header]

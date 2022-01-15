@@ -1,5 +1,6 @@
 * [Documentation]([[./README.md]])
 * general:
+	- [ ] start program session in a new cmd instance
 	- [x] tabulated ui
 	- [x] step by step user input
 	- [x] final edit purchase
@@ -7,7 +8,7 @@
 	- [x] tax options
 	- [x] Show suffix for price
 	- [x] Password login for admin pages
-	- [ ] save main db after each transaction(in ui.py), each value update(in inventorypage.py) TODO:IMPORTANT
+	- [x] save main db after each transaction(in ui.py), each value update(in inventorypage.py)
 * Billing:
 	- [x] generate bulk order from db/csv(all orders are to be considered as bulk orders at checkout)
 	- [x] csv file error handle for bulk order
