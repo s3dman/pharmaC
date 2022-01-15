@@ -1,6 +1,6 @@
-* [Documentation]([[./README.md]])
+* [Documentation](./README.md)
 * general:
-	- [ ] start program session in a new cmd instance
+	- [x] start program session in a new cmd instance
 	- [x] tabulated ui
 	- [x] step by step user input
 	- [x] final edit purchase
