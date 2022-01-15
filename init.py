@@ -14,9 +14,12 @@ def initialize():
             db = ReadDB('STOCK.DB')
             LoadingScreen()
             HomePage(db)
-            break
+            return 0
         else:
             counter -= 1
             if counter != 0:
                 print(f"Password incorrect! {counter} attempts remaining.")
-initialize()
+    return 0
+
+if __name__ == "__main__":
+    initialize()
