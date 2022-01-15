@@ -64,8 +64,7 @@ def MainPage(db):
             break
         Clear()
 
-        # WriteDB(db,'STOCK.DB')
-        # TODO write important
+        WriteDB(db,'STOCK.DB')
 
 
 def SearchAndEditPage(db):

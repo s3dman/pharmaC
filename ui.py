@@ -80,8 +80,7 @@ def HomePage(db):
             linesbetweenrows=True,
         )
 
-        # WriteDB(db,'STOCK.DB')
-        # TODO write important
+        WriteDB(db,'STOCK.DB')
 
         if takeinput() == -1:
             Clear()
