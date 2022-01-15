@@ -13,9 +13,11 @@
 	- [x] generate bulk order from db/csv(all orders are to be considered as bulk orders at checkout)
 	- [x] csv file error handle for bulk order
 	- [x] bulkadd dont try to buy items if already not in stock but in bulkadd-db
+	- [ ] search with name go back option if getting tired
 * Inventory with item update features:
 	- [x] search for items using name and get ID
-	- [ ] search with name go back
+	- [ ] search with name go back option if getting tired
+	- [ ] name,qty,price eidtor no go back screen
 	- [x] edit details(name and cost) of an item
 	- [x] inventory search and edit name, qty,
 	- [x] list whole inventory
