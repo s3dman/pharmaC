@@ -179,7 +179,6 @@ def SearchAndEditPage(db):
                 printheader=False
             )
             input("Press Enter to continue.")
-            return -1
 
         # price edit option for selected drug
         def priceEdit():
@@ -211,13 +210,15 @@ def SearchAndEditPage(db):
         # menu for variable edit option
         def takeinput():
             x = input("❯ ")
-            if x in "1 2 3".split():
+            if x in "0 1 2 3".split():
                 if x == '1':
                     return nameEdit()
                 if x == '2':
                     return qtyEdit()
                 if x == '3':
                     return priceEdit()
+                if x == '0':
+                    return -1
             else:
                 print("Invalid syntax, Try again:")
                 takeinput()
@@ -229,6 +230,7 @@ def SearchAndEditPage(db):
                     "1,Name".split(','),
                     "2,Qty".split(','),
                     "3,Price".split(','),
+                    "0,Go back".split(','),
                 ],
                 linesbetweenrows=True,
             )
@@ -376,11 +378,11 @@ def Expired(db):
     # confirmation menu for removal
     while True:
         x = input("Proceed to removal [y/n]: ")
-        if x in "Yy":
+        if x in ("Y","y"):
             RemoveExpired(db)
             print(f"removed {len(data)} entries.")
             break
-        elif x in "Nn":
+        elif x in ("N","n"):
             print("No entries removed.")
             break
         else:

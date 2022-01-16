@@ -16,7 +16,9 @@ def PrimaryInput(db):
         Clear()
         # get drug name using SearchWithName
         def DrugNameInput():
-            med = input("Drug name: ")
+            # TODO
+            # print("Input prompted value or '0' to go back to main menu.")
+            med = input("Drug name: ").strip()
             templist = []
             for i in SearchWithName(med,db):
                 qty = 0

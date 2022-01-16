@@ -16,8 +16,8 @@
 	- [ ] search with name go back option if getting tired
 * Inventory with item update features:
 	- [x] search for items using name and get ID
-	- [ ] search with name go back option if getting tired
-	- [ ] name,qty,price eidtor no go back screen
+	- [x] search with name go back option if getting tired
+	- [x] name,qty,price eidtor no go back screen
 	- [x] edit details(name and cost) of an item
 	- [x] inventory search and edit name, qty,
 	- [x] list whole inventory
