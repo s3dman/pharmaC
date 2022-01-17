@@ -1,9 +1,10 @@
 from main import ReadDB
+from getpass import getpass
 
 # prompt password for login and check with decrypted password obtained from MANAGEMENT.DB
 def Login():
     passfile = ReadDB('MANAGEMENT.DB')
-    x = input("Please enter admin password: ")
+    x = getpass()
     if x.strip() == Decoder(passfile['password']):
         return 0
     return -1
