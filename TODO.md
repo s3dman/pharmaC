@@ -25,6 +25,7 @@
 	- [x] Bulk add
 	- [x] remove expired
 	- [x] remove expire function not working
+	- [x] expired single expiry quantities have error
 * Management:
 	- [x] stock updating from csv
 	- [x] check expiry

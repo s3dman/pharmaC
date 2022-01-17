@@ -1,7 +1,7 @@
 ID, NAME, QTY, EXPIRY, COST 
 I001,Acetazolamide,20,12-2022,50
-I002,Acyclovir,20,12-2022,300
-I003,Adenosine,20,12-2022,208
+I002,Acyclovir,20,12-2021,300
+I003,Adenosine,20,12-2021,208
 I004,Albendazole,20,12-2022,10
 I005,Allopurinol,20,12-2022,75
 I006,Alprazolam,20,12-2022,40

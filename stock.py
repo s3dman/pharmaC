@@ -25,6 +25,8 @@ def GetExpired(db):
             if IsExpired(i):
                 x.update({i:db[ID][1][i]})
         expireddb.update({ID:[db[ID][0],x]})
+        if len(expireddb[ID][1]) == 0:
+            del expireddb[ID]
     return expireddb
 
 # remove all expired stuff from db

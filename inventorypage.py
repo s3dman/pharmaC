@@ -339,6 +339,7 @@ def Expired(db):
     Clear()
     CleanDB(db)
     to_be_removed = GetExpired(db)
+
     if len(to_be_removed) == 0:
         input("No expired items found. Press Enter to continue.")
         return
