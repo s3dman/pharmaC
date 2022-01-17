@@ -12,3 +12,4 @@
 - [ ] billingpage.py
 - [ ] inventorypage.py
 - [ ] debug.py
+%% codeimg.io
