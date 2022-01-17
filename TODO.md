@@ -15,6 +15,7 @@
 	- [x] csv file error handle for bulk order
 	- [x] bulkadd dont try to buy items if already not in stock but in bulkadd-db
 	- [ ] search with name go back option if getting tired
+	- [ ] choice selection menu go back
 * Inventory with item update features:
 	- [x] search for items using name and get ID
 	- [x] search with name go back option if getting tired
