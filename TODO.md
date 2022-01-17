@@ -9,6 +9,7 @@
 	- [x] Show suffix for price
 	- [x] Password login for admin pages
 	- [x] save main db after each transaction(in ui.py), each value update(in inventorypage.py)
+	- [ ] to add more logging
 * Billing:
 	- [x] generate bulk order from db/csv(all orders are to be considered as bulk orders at checkout)
 	- [x] csv file error handle for bulk order
