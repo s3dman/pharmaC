@@ -1,15 +1,14 @@
-- [ ] run.py
-- [ ] init.py
-- [ ] authentication.py
-- [ ] main.py
-- [ ] management.py
-- [ ] stock.py
-- [ ] users.py
-- [ ] ui.py
-- [ ] userhistorypage.py
-- [ ] managementpage.py
-- [ ] reportpage.py
-- [ ] billingpage.py
-- [ ] inventorypage.py
-- [ ] debug.py
-%% codeimg.io
+- [x] run.py
+- [x] init.py
+- [x] authentication.py
+- [x] main.py
+- [x] management.py
+- [x] stock.py
+- [x] users.py
+- [x] ui.py
+- [x] userhistorypage.py
+- [x] managementpage.py
+- [x] reportpage.py
+- [x] billingpage.py
+- [x] inventorypage.py
+- [x] debug.py
