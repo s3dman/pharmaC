@@ -69,10 +69,10 @@ def TaxUpdate():
     )
     while True:
         tax = input("Input new tax percentage value: ")
-        if tax.isnumeric():
-            tax = int(tax)
+        try: 
+            tax = float(tax)
             break
-        else:
+        except ValueError:
             print("Invalid syntax, Try again:")
 
     dbfile['tax'] = tax

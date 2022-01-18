@@ -151,6 +151,6 @@ def billprint(header,data,Name,z,tax,dat,printheader=True,prependspace=0):
         print(prependspace*' '+'| '+formatted_row.format(*row)+' |')
     print(prependspace*' '+'+'+'='*(len(formatted_row.format(*header))+2)+'+')
     print(prependspace*" "+"| Total cost before Tax:"+" "*(wide-27-len(str(z[0])))+f"Rs {z[0]} |")
-    print(prependspace*" "+f"| Tax [{tax}%]:"+" "*(wide-15-len(str(z[1])))+f"Rs {z[1]} |")
+    print(prependspace*" "+f"| Tax [{tax}%]:"+" "*(wide-13-len(str(tax))-len(str(z[1])))+f"Rs {z[1]} |")
     print(prependspace*" "+"| Total cost after Tax:"+" "*(wide-26-len(str(z[1]+z[0])))+f"Rs {z[1]+z[0]} |")
     print(prependspace*' '+'+'+'='*(len(formatted_row.format(*header))+2)+'+')

@@ -13,7 +13,7 @@ def initialize():
         if Login() != -1:
             Clear()
             db = ReadDB('STOCK.DB')
-            LoadingScreen()
+            # LoadingScreen()
             HomePage(db)
             return 0
         else:
