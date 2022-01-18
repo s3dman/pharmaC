@@ -1,50 +1,14 @@
-=== run.py ===
-
-from main import *
-from billingpage import *
-from management import *
-from stock import *
-from ui import *
-from users import *
-from authentication import Login
-
-# start database and authentication and proceed to loadingscreen & homepage if passed
-def initialize():
-    counter = 5
-    while counter>0:
-        if Login() != -1:
-            Clear()
-            db = ReadDB('STOCK.DB')
-            LoadingScreen()
-            HomePage(db)
-            return 0
-        else:
-            counter -= 1
-            if counter != 0:
-                print(f"Password incorrect! {counter} attempts remaining.")
-    return 0
-
-# to avoid initialization call when externally importing
-# to be executed only when directly run 
-if __name__ == "__main__":
-    initialize()
 
 
-=== init.py ===
-
-import init
-import os
-# checks if windows system and runs the program in a cmd instance
-if os.name == 'nt':
-    print("Program is running in another cmd window.")
-    os.system('start cmd /K py init.py')
-else:
-    init.initialize()
-# if its unix/unix-like system it runs it in the current shell session
 
 
-=== authentication.py ===
 
+
+
+
+
+
+===authentication.py===
 from main import ReadDB
 from getpass import getpass
 
@@ -72,305 +36,7 @@ def Decoder(x):
     return y
 
 
-=== main.py ===
-
-import pickle
-import os
-
-# to write a data object to a file
-def WriteDB(db,file):
-    with open(f'./database/{file}','wb') as db_file:
-        pickle.dump(db,db_file)
-
-# to read a stored data object from a file
-def ReadDB(file):
-    with open(f'./database/{file}','rb') as db_file:
-        db = pickle.load(db_file)
-    return db
-
-# get list of files that has .csv extension in the FILES dir of current folder
-def CheckLocalFiles():
-    files = [i for i in os.listdir("FILES") if i.endswith(".csv")]
-    return files
-
-
-=== management.py ===
-
-from difflib import SequenceMatcher
-import datetime
-
-# manually edit name/cost of a drug from a db
-def ManualEdit(ID,db,name=-1,cost=-1):
-    if name != -1:
-        db[ID][0] = name
-    if cost != -1:
-        db[ID][-1] = cost
-
-# sequence matching search to find similar drug names
-def SearchWithName(name,db):
-    similar = []
-    for i in db:
-        if SequenceMatcher(None,name,db[i][0]).ratio() >= 0.6:
-            similar.append(i)
-    return similar
-
-# logger function
-def Logger(msg):
-    with open('database/database.log','a') as file:
-        file.write(f"[{datetime.datetime.now()}] {msg}\n")
-
-
-=== stock.py ===
-
-import csv
-import datetime
-
-# helper function to sort date
-def DateSorter(date):
-    date = [int(i) for i in date[0].split('-')]
-    return (date[1]*100)+date[0]
-
-# to check if a date is expired by comparing with current date
-def IsExpired(date) :
-    td = datetime.date.today()
-    d = [int(i) for i in date.split('-')]
-    if d[1]<td.year:
-        return True
-    if d[1] == td.year and d[0]<=td.month:
-        return True
-    return False
-
-# get dict of expired stuff from db
-def GetExpired(db):
-    expireddb = {}
-    for ID in db:
-        x = {}
-        for i in db[ID][1]:
-            if IsExpired(i):
-                x.update({i:db[ID][1][i]})
-        expireddb.update({ID:[db[ID][0],x]})
-        if len(expireddb[ID][1]) == 0:
-            del expireddb[ID]
-    return expireddb
-
-# remove all expired stuff from db
-def RemoveExpired(db):
-    for ID in db:
-        temp = db[ID][1].copy()
-        for i in db[ID][1]:
-            if IsExpired(i):
-                del temp[i]
-        db[ID][1] = temp
-
-# remove all drug entries with qty<=0 from db
-def CleanDB(db):
-    for item_id in db:
-        for i in list(db[item_id][1].items()):
-            if i[1] <= 0:
-                del db[item_id][1][i[0]]
-    for j in list(db.items()):
-        if j[1][1] == {}:
-            del db[j[0]]
-
-# add single item to db
-def ItemAdd(item_id,item_info,db):
-    if item_id in db:
-        for i in item_info[1]:
-            if i in db[item_id][1]:
-                db[item_id][1][i] += item_info[1][i]
-            else:
-                db[item_id][1][i] = item_info[1][i]
-    else:
-        db[item_id] = item_info
-    for j in db:
-        db[j][1] = dict(sorted(db[j][1].items(),key=DateSorter))
-
-# remove single item from db
-def ItemRemove(ID,qty,db):
-    if ID in db:
-        rdict = {}
-        for i in db[ID][1]:
-            if db[ID][1][i]<qty:
-                rdict[i] = db[ID][1][i]
-                qty -= db[ID][1][i]
-                db[ID][1][i] = 0
-            else:
-                rdict[i] = qty
-                db[ID][1][i] -= qty
-                CleanDB(db)
-                return rdict
-        CleanDB(db)
-        return rdict
-    else:
-        return -1
-
-# adds a dict of items (existant & non-existant) items to to_dict
-def BulkAdd(from_dict,to_dict):
-    for i in from_dict:
-        ItemAdd(i,from_dict[i],to_dict)
-
-# removes a dict of items (existant) from to_dict
-# returns a list with dicts of expiry:qty if the item exists else -1
-def BulkRemove(from_dict,to_dict):
-    rlist = []
-    for i in from_dict:
-        if i in to_dict:
-            rlist.append([i,to_dict[i][0],to_dict[i][-1],ItemRemove(i,from_dict[i][1],to_dict)])
-    return rlist
-
-# Read csv file and return a dict of items. different types of dicts are
-# returned based on row length. if invalid csv is passed returns -1
-def ReadBulkFile(file):
-    data = []
-    data_dict = {}
-    with open(file,'r') as csvfile:
-        reader = csv.reader(csvfile)
-        try:
-            column_len = len(next(reader))
-        except StopIteration:
-            return -1
-        for i in reader:
-            data.append([int(j) if j.strip().isnumeric() else j.strip() for j in i])
-        if column_len == 5:
-            for i in data:
-                data_dict[i[0]] = [i[1],{i[3]:i[2]},i[4]]
-        elif column_len == 3:
-            for i in data:
-                data_dict[i[0]] = [i[1],i[2]]
-        else:
-            data_dict = -1
-    return (column_len,data_dict)
-
-
-=== users.py ===
-
-import datetime
-
-# get formatted date
-def Today():
-    today= datetime.datetime.now()
-    return [today.strftime("%d-%m-%y"),today.strftime("%X")]
-
-# add user logs (name,purchased items) to userlogdb
-def AddUserLogs(name,purchase_list,userlogdb):
-    name = name.strip().title()
-    if Today()[0] in userlogdb:
-        userlogdb[Today()[0]].update({Today()[1]:{name:purchase_list}})
-    else:
-        userlogdb[Today()[0]] = {Today()[1]:{name:purchase_list}}
-
-# purchase_list is modified to a format which can be parsed for bill generation
-def FinalBill(purchase_list,tax):
-    totalcost = 0
-    for i in purchase_list:
-        count = 0
-        for j in i[3]:
-            count += i[3][j]
-        costperitem = count*i[2]
-        i.append(costperitem)
-        totalcost += costperitem
-    purchase_list.append([float(totalcost),float(totalcost)*tax/100])
-    return purchase_list
-
-
-=== ui.py ===
-
-import time
-from os import system, name
-
-import billingpage
-from main import WriteDB
-import inventorypage
-import userhistorypage
-import reportpage
-import managementpage
-
-# function to clear screen based on diff operating systems
-def Clear():
-    if name == 'nt': _ = system('cls')
-    else: _ = system('clear')
-
-# custom tabulation ui for printing tables
-def tabulate(header,data,printheader=True,linesbetweenrows=False,prependspace=0):
-    widths = [len(cell) for cell in header]
-    for row in data:
-        for i, cell in enumerate(row):
-            widths[i] = max(len(str(cell)), widths[i])
-    formatted_row = ' | '.join('{:%d}' % width for width in widths)
-    if printheader:
-        print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
-        print(prependspace*' '+'| '+formatted_row.format(*header)+' |')
-        print(prependspace*' '+'+'+'='*(len(formatted_row.format(*header))+2)+'+')
-    else:
-        print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
-    for row in data:
-        print(prependspace*' '+'| '+formatted_row.format(*row)+' |')
-        if linesbetweenrows:
-            print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
-    if linesbetweenrows == False: print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
-
-
-# loading screen print function
-def LoadingScreen():
-    Prepend = ' '*8
-    for i in range(58):
-        print(f"""
-{Prepend} ____   _____  ____      ____   _
-{Prepend}/ ___| | ____||  _ \    |  _ \ | |__    __ _  _ __  _ __ ___    __ _
-{Prepend}\___ \ |  _|  | | | |   | |_) || '_ \  / _` || '__|| '_ ` _ \  / _` |
-{Prepend} ___) || |___ | |_| |   |  __/ | | | || (_| || |   | | | | | || (_| |
-{Prepend}|____/ |_____||____/    |_|    |_| |_| \__,_||_|   |_| |_| |_| \__,_|\n\n""")
-        print(f"{Prepend}LOADING: [{'#'*i+' '*(58-i)}]")
-        time.sleep(0.05)
-        Clear()
-
-# main home page menu
-# redirects to different sub-menus according to user input
-def HomePage(db):
-    def takeinput():
-        x = input("❯ ")
-        if x in "1 2 3 4 5 0".split():
-            if x == '1':
-                Clear()
-                billingpage.FinalEditOption(db)
-            if x == '2':
-                inventorypage.MainPage(db)
-            if x == '3':
-                managementpage.MainPage()
-            if x == '4':
-                userhistorypage.MainPage()
-            if x == '5':
-                reportpage.MainPage()
-            if x == '0':
-                return -1
-        else:
-            print("Invalid syntax, Try again:")
-            takeinput()
-    while True:
-        print("Type the option you want to choose and press Enter [0-5]:")
-        tabulate(
-            "Option Service".split(),
-            [
-                "1 Billing".split(),
-                "2 Inventory".split(),
-                "3 Management".split(),
-                "4,User History".split(','),
-                "5 Reports".split(),
-                "0 Quit".split(),
-            ],
-            linesbetweenrows=True,
-        )
-
-        WriteDB(db,'STOCK.DB')
-
-        if takeinput() == -1:
-            Clear()
-            break
-        Clear()
-
-
-=== billingpage.py ===
-
+===billingpage.py===
 from management import SearchWithName, Logger
 from ui import tabulate, Clear
 from main import CheckLocalFiles
@@ -641,8 +307,48 @@ def FinalEditOption(db):
         return
 
 
-=== inventorypage.py ===
+===debug.py===
+# debug script for running unit tests
 
+from main import ReadDB, WriteDB
+
+def setupnew():
+    WriteDB({},'USERS.DB')
+    WriteDB({},'STOCK.DB')
+    WriteDB({'tax':0,'password':'�100�114�111�119�115�115�97�112'},'MANAGEMENT.DB')
+
+===init.py===
+from main import *
+from billingpage import *
+from management import *
+from stock import *
+from ui import *
+from users import *
+from authentication import Login
+
+# start database and authentication and proceed to loadingscreen & homepage if passed
+def initialize():
+    counter = 5
+    while counter>0:
+        if Login() != -1:
+            Clear()
+            db = ReadDB('STOCK.DB')
+            LoadingScreen()
+            HomePage(db)
+            return 0
+        else:
+            counter -= 1
+            if counter != 0:
+                print(f"Password incorrect! {counter} attempts remaining.")
+    return 0
+
+# to avoid initialization call when externally importing
+# to be executed only when directly run 
+if __name__ == "__main__":
+    initialize()
+
+
+===inventorypage.py===
 from os import system, name
 from pprint import pprint
 from management import SearchWithName
@@ -1037,8 +743,53 @@ def Expired(db):
     input("Press Enter to continue.")
 
 
-=== managementpage.py ===
+===main.py===
+import pickle
+import os
 
+# to write a data object to a file
+def WriteDB(db,file):
+    with open(f'./database/{file}','wb') as db_file:
+        pickle.dump(db,db_file)
+
+# to read a stored data object from a file
+def ReadDB(file):
+    with open(f'./database/{file}','rb') as db_file:
+        db = pickle.load(db_file)
+    return db
+
+# get list of files that has .csv extension in the FILES dir of current folder
+def CheckLocalFiles():
+    files = [i for i in os.listdir("FILES") if i.endswith(".csv")]
+    return files
+
+
+===management.py===
+from difflib import SequenceMatcher
+import datetime
+
+# manually edit name/cost of a drug from a db
+def ManualEdit(ID,db,name=-1,cost=-1):
+    if name != -1:
+        db[ID][0] = name
+    if cost != -1:
+        db[ID][-1] = cost
+
+# sequence matching search to find similar drug names
+def SearchWithName(name,db):
+    similar = []
+    for i in db:
+        if SequenceMatcher(None,name,db[i][0]).ratio() >= 0.6:
+            similar.append(i)
+    return similar
+
+# logger function
+def Logger(msg):
+    with open('database/database.log','a') as file:
+        file.write(f"[{datetime.datetime.now()}] {msg}\n")
+
+
+===managementpage.py===
 from os import system, name
 from main import ReadDB,WriteDB
 from authentication import Encoder, Decoder
@@ -1153,8 +904,349 @@ def PasswordUpdate():
     WriteDB(dbfile,'MANAGEMENT.DB')
 
 
-=== userhistorypage.py ===
+===reportpage.py===
+from main import ReadDB
+from os import system, name
 
+def Clear():
+    if name == 'nt': _ = system('cls')
+    else: _ = system('clear')
+
+# modified tabulation ui for this use case
+def tabulate(header,data,printheader=True,linesbetweenrows=False,prependspace=0):
+    widths = [len(cell) for cell in header]
+    for row in data:
+        for i, cell in enumerate(row):
+            widths[i] = max(len(str(cell)), widths[i])
+    formatted_row = ' | '.join('{:%d}' % width for width in widths)
+    if printheader:
+        print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
+        print(prependspace*' '+'| '+formatted_row.format(*header)+' |')
+        print(prependspace*' '+'+'+'='*(len(formatted_row.format(*header))+2)+'+')
+    else:
+        print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
+    for row in data:
+        print(prependspace*' '+'| '+formatted_row.format(*row)+' |')
+        if linesbetweenrows:
+            print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
+    if linesbetweenrows == False: print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
+    
+# print graph from graphing data provided
+def BarGrapher(data_,header='Drug Sales Chart'):
+    Clear()
+    data = {}
+    maxlen = max(max(len(i) for i in data_),5)
+    mindata = int(min(data_.values()))
+    maxdata = int(max(data_.values()))
+    for i in data_:
+        data[i] = int((74-maxlen)*(data_[i]-mindata+1)/(maxdata-mindata+1))
+        if data[i] <= 0:
+            data[i] = 1
+    print('+'+'='*80+'+')
+    print('| '+header.center(79)+'|')
+    print('+'+'='*(maxlen+2)+'+'+(77-maxlen)*'='+'+')
+    for i in data:
+        print('| '+i.rjust(maxlen)+' | '+"█"*data[i]+" "*(76-maxlen-data[i])+'|')
+        print('+'+'-'*(maxlen+2)+'+'+(77-maxlen)*'-'+'+')
+
+    x_axis = [mindata,mindata+(maxdata-mindata)/4,(maxdata-mindata)/2,maxdata-(maxdata-mindata)/4,maxlen]
+    axis_len_sum = 0
+    for i in x_axis:
+        axis_len_sum += len(str(i))
+    l = ''
+    for i in x_axis[:-1]:
+        l += str(int(i))+" "*int((76-maxlen-axis_len_sum)/4)
+    l += str(maxdata)
+    print('| '+"Sales".center(maxlen)+'-->'+l.center(76-maxlen)+'|')
+    print('+'+'='*80+'+')
+    input("Press Enter to continue.")
+
+# print date-wise salesgraph from userdb
+def SalesGraph(userdb):
+    temp_db = {}
+    for i in userdb:
+        for j in userdb[i]:
+            for k in userdb[i][j]:
+                if i in temp_db:
+                    temp_db[i] += userdb[i][j][k][-1][0]
+                else:
+                    temp_db[i] = userdb[i][j][k][-1][0]
+    BarGrapher(temp_db,'Sales Report')
+
+# main menu for report page
+def MainPage():
+    temp_db={}
+    userdb = ReadDB('USERS.DB')
+    if len(userdb) == 0:
+        Clear()
+        input("Insufficent data available. Press enter to continue.")
+        return -1
+    for i in userdb.items():
+        for j in i[1].items():
+            for k in j[1].items():
+                for l in k[1][:-1]:
+                    if l[1] in temp_db:
+                        temp_db[l[1]] += l[-1]
+                    else:
+                        temp_db.update({l[1]:l[-1]})
+    Clear()
+    def takeinput():
+        x = input("❯ ")
+        if x in "1 2 0".split():
+            if x == '1':
+                BarGrapher(temp_db)
+            if x == '2':
+                SalesGraph(userdb)
+            if x == '0':
+                return -1
+        else:
+            print("Invalid syntax, Try again:")
+            takeinput()
+    while True:
+        print("Type the option you want to choose and press Enter [0-2]:")
+        tabulate(
+            "Option Service".split(),
+            [
+                "1,Drug sales chart".split(','),
+                "2,Sales Report".split(','),
+                "0,Go back".split(','),
+            ],
+            linesbetweenrows=True,
+        )
+        if takeinput() == -1:
+            Clear()
+            break
+        Clear()
+
+
+===run.py===
+import init
+import os
+# checks if windows system and runs the program in a cmd instance
+if os.name == 'nt':
+    print("Program is running in another cmd window.")
+    os.system('start cmd /K py init.py')
+else:
+    init.initialize()
+# if its unix/unix-like system it runs it in the current shell session
+
+
+===stock.py===
+import csv
+import datetime
+
+# helper function to sort date
+def DateSorter(date):
+    date = [int(i) for i in date[0].split('-')]
+    return (date[1]*100)+date[0]
+
+# to check if a date is expired by comparing with current date
+def IsExpired(date) :
+    td = datetime.date.today()
+    d = [int(i) for i in date.split('-')]
+    if d[1]<td.year:
+        return True
+    if d[1] == td.year and d[0]<=td.month:
+        return True
+    return False
+
+# get dict of expired stuff from db
+def GetExpired(db):
+    expireddb = {}
+    for ID in db:
+        x = {}
+        for i in db[ID][1]:
+            if IsExpired(i):
+                x.update({i:db[ID][1][i]})
+        expireddb.update({ID:[db[ID][0],x]})
+        if len(expireddb[ID][1]) == 0:
+            del expireddb[ID]
+    return expireddb
+
+# remove all expired stuff from db
+def RemoveExpired(db):
+    for ID in db:
+        temp = db[ID][1].copy()
+        for i in db[ID][1]:
+            if IsExpired(i):
+                del temp[i]
+        db[ID][1] = temp
+
+# remove all drug entries with qty<=0 from db
+def CleanDB(db):
+    for item_id in db:
+        for i in list(db[item_id][1].items()):
+            if i[1] <= 0:
+                del db[item_id][1][i[0]]
+    for j in list(db.items()):
+        if j[1][1] == {}:
+            del db[j[0]]
+
+# add single item to db
+def ItemAdd(item_id,item_info,db):
+    if item_id in db:
+        for i in item_info[1]:
+            if i in db[item_id][1]:
+                db[item_id][1][i] += item_info[1][i]
+            else:
+                db[item_id][1][i] = item_info[1][i]
+    else:
+        db[item_id] = item_info
+    for j in db:
+        db[j][1] = dict(sorted(db[j][1].items(),key=DateSorter))
+
+# remove single item from db
+def ItemRemove(ID,qty,db):
+    if ID in db:
+        rdict = {}
+        for i in db[ID][1]:
+            if db[ID][1][i]<qty:
+                rdict[i] = db[ID][1][i]
+                qty -= db[ID][1][i]
+                db[ID][1][i] = 0
+            else:
+                rdict[i] = qty
+                db[ID][1][i] -= qty
+                CleanDB(db)
+                return rdict
+        CleanDB(db)
+        return rdict
+    else:
+        return -1
+
+# adds a dict of items (existant & non-existant) items to to_dict
+def BulkAdd(from_dict,to_dict):
+    for i in from_dict:
+        ItemAdd(i,from_dict[i],to_dict)
+
+# removes a dict of items (existant) from to_dict
+# returns a list with dicts of expiry:qty if the item exists else -1
+def BulkRemove(from_dict,to_dict):
+    rlist = []
+    for i in from_dict:
+        if i in to_dict:
+            rlist.append([i,to_dict[i][0],to_dict[i][-1],ItemRemove(i,from_dict[i][1],to_dict)])
+    return rlist
+
+# Read csv file and return a dict of items. different types of dicts are
+# returned based on row length. if invalid csv is passed returns -1
+def ReadBulkFile(file):
+    data = []
+    data_dict = {}
+    with open(file,'r') as csvfile:
+        reader = csv.reader(csvfile)
+        try:
+            column_len = len(next(reader))
+        except StopIteration:
+            return -1
+        for i in reader:
+            data.append([int(j) if j.strip().isnumeric() else j.strip() for j in i])
+        if column_len == 5:
+            for i in data:
+                data_dict[i[0]] = [i[1],{i[3]:i[2]},i[4]]
+        elif column_len == 3:
+            for i in data:
+                data_dict[i[0]] = [i[1],i[2]]
+        else:
+            data_dict = -1
+    return (column_len,data_dict)
+
+===ui.py===
+import time
+from os import system, name
+
+import billingpage
+from main import WriteDB
+import inventorypage
+import userhistorypage
+import reportpage
+import managementpage
+
+# function to clear screen based on diff operating systems
+def Clear():
+    if name == 'nt': _ = system('cls')
+    else: _ = system('clear')
+
+# custom tabulation ui for printing tables
+def tabulate(header,data,printheader=True,linesbetweenrows=False,prependspace=0):
+    widths = [len(cell) for cell in header]
+    for row in data:
+        for i, cell in enumerate(row):
+            widths[i] = max(len(str(cell)), widths[i])
+    formatted_row = ' | '.join('{:%d}' % width for width in widths)
+    if printheader:
+        print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
+        print(prependspace*' '+'| '+formatted_row.format(*header)+' |')
+        print(prependspace*' '+'+'+'='*(len(formatted_row.format(*header))+2)+'+')
+    else:
+        print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
+    for row in data:
+        print(prependspace*' '+'| '+formatted_row.format(*row)+' |')
+        if linesbetweenrows:
+            print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
+    if linesbetweenrows == False: print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
+
+
+# loading screen print function
+def LoadingScreen():
+    Prepend = ' '*8
+    for i in range(58):
+        print(f"""
+{Prepend} ____   _____  ____      ____   _
+{Prepend}/ ___| | ____||  _ \    |  _ \ | |__    __ _  _ __  _ __ ___    __ _
+{Prepend}\___ \ |  _|  | | | |   | |_) || '_ \  / _` || '__|| '_ ` _ \  / _` |
+{Prepend} ___) || |___ | |_| |   |  __/ | | | || (_| || |   | | | | | || (_| |
+{Prepend}|____/ |_____||____/    |_|    |_| |_| \__,_||_|   |_| |_| |_| \__,_|\n\n""")
+        print(f"{Prepend}LOADING: [{'#'*i+' '*(58-i)}]")
+        time.sleep(0.05)
+        Clear()
+
+# main home page menu
+# redirects to different sub-menus according to user input
+def HomePage(db):
+    def takeinput():
+        x = input("❯ ")
+        if x in "1 2 3 4 5 0".split():
+            if x == '1':
+                Clear()
+                billingpage.FinalEditOption(db)
+            if x == '2':
+                inventorypage.MainPage(db)
+            if x == '3':
+                managementpage.MainPage()
+            if x == '4':
+                userhistorypage.MainPage()
+            if x == '5':
+                reportpage.MainPage()
+            if x == '0':
+                return -1
+        else:
+            print("Invalid syntax, Try again:")
+            takeinput()
+    while True:
+        print("Type the option you want to choose and press Enter [0-5]:")
+        tabulate(
+            "Option Service".split(),
+            [
+                "1 Billing".split(),
+                "2 Inventory".split(),
+                "3 Management".split(),
+                "4,User History".split(','),
+                "5 Reports".split(),
+                "0 Quit".split(),
+            ],
+            linesbetweenrows=True,
+        )
+
+        WriteDB(db,'STOCK.DB')
+
+        if takeinput() == -1:
+            Clear()
+            break
+        Clear()
+
+
+===userhistorypage.py===
 from os import system, name
 from main import ReadDB
 
@@ -1313,130 +1405,31 @@ def billprint(header,data,Name,z,tax,dat,printheader=True,prependspace=0):
     print(prependspace*' '+'+'+'='*(len(formatted_row.format(*header))+2)+'+')
 
 
-=== reportpage.py ===
+===users.py===
+import datetime
 
-from main import ReadDB
-from os import system, name
+# get formatted date
+def Today():
+    today= datetime.datetime.now()
+    return [today.strftime("%d-%m-%y"),today.strftime("%X")]
 
-def Clear():
-    if name == 'nt': _ = system('cls')
-    else: _ = system('clear')
-
-# modified tabulation ui for this use case
-def tabulate(header,data,printheader=True,linesbetweenrows=False,prependspace=0):
-    widths = [len(cell) for cell in header]
-    for row in data:
-        for i, cell in enumerate(row):
-            widths[i] = max(len(str(cell)), widths[i])
-    formatted_row = ' | '.join('{:%d}' % width for width in widths)
-    if printheader:
-        print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
-        print(prependspace*' '+'| '+formatted_row.format(*header)+' |')
-        print(prependspace*' '+'+'+'='*(len(formatted_row.format(*header))+2)+'+')
+# add user logs (name,purchased items) to userlogdb
+def AddUserLogs(name,purchase_list,userlogdb):
+    name = name.strip().title()
+    if Today()[0] in userlogdb:
+        userlogdb[Today()[0]].update({Today()[1]:{name:purchase_list}})
     else:
-        print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
-    for row in data:
-        print(prependspace*' '+'| '+formatted_row.format(*row)+' |')
-        if linesbetweenrows:
-            print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
-    if linesbetweenrows == False: print(prependspace*' '+'+'+'-'*(len(formatted_row.format(*header))+2)+'+')
-    
-# print graph from graphing data provided
-def BarGrapher(data_,header='Drug Sales Chart'):
-    Clear()
-    data = {}
-    maxlen = max(max(len(i) for i in data_),5)
-    mindata = int(min(data_.values()))
-    maxdata = int(max(data_.values()))
-    for i in data_:
-        data[i] = int((74-maxlen)*(data_[i]-mindata+1)/(maxdata-mindata+1))
-        if data[i] <= 0:
-            data[i] = 1
-    print('+'+'='*80+'+')
-    print('| '+header.center(79)+'|')
-    print('+'+'='*(maxlen+2)+'+'+(77-maxlen)*'='+'+')
-    for i in data:
-        print('| '+i.rjust(maxlen)+' | '+"█"*data[i]+" "*(76-maxlen-data[i])+'|')
-        print('+'+'-'*(maxlen+2)+'+'+(77-maxlen)*'-'+'+')
+        userlogdb[Today()[0]] = {Today()[1]:{name:purchase_list}}
 
-    x_axis = [mindata,mindata+(maxdata-mindata)/4,(maxdata-mindata)/2,maxdata-(maxdata-mindata)/4,maxlen]
-    axis_len_sum = 0
-    for i in x_axis:
-        axis_len_sum += len(str(i))
-    l = ''
-    for i in x_axis[:-1]:
-        l += str(int(i))+" "*int((76-maxlen-axis_len_sum)/4)
-    l += str(maxdata)
-    print('| '+"Sales".center(maxlen)+'-->'+l.center(76-maxlen)+'|')
-    print('+'+'='*80+'+')
-    input("Press Enter to continue.")
-
-# print date-wise salesgraph from userdb
-def SalesGraph(userdb):
-    temp_db = {}
-    for i in userdb:
-        for j in userdb[i]:
-            for k in userdb[i][j]:
-                if i in temp_db:
-                    temp_db[i] += userdb[i][j][k][-1][0]
-                else:
-                    temp_db[i] = userdb[i][j][k][-1][0]
-    BarGrapher(temp_db,'Sales Report')
-
-# main menu for report page
-def MainPage():
-    temp_db={}
-    userdb = ReadDB('USERS.DB')
-    if len(userdb) == 0:
-        Clear()
-        input("Insufficent data available. Press enter to continue.")
-        return -1
-    for i in userdb.items():
-        for j in i[1].items():
-            for k in j[1].items():
-                for l in k[1][:-1]:
-                    if l[1] in temp_db:
-                        temp_db[l[1]] += l[-1]
-                    else:
-                        temp_db.update({l[1]:l[-1]})
-    Clear()
-    def takeinput():
-        x = input("❯ ")
-        if x in "1 2 0".split():
-            if x == '1':
-                BarGrapher(temp_db)
-            if x == '2':
-                SalesGraph(userdb)
-            if x == '0':
-                return -1
-        else:
-            print("Invalid syntax, Try again:")
-            takeinput()
-    while True:
-        print("Type the option you want to choose and press Enter [0-2]:")
-        tabulate(
-            "Option Service".split(),
-            [
-                "1,Drug sales chart".split(','),
-                "2,Sales Report".split(','),
-                "0,Go back".split(','),
-            ],
-            linesbetweenrows=True,
-        )
-        if takeinput() == -1:
-            Clear()
-            break
-        Clear()
-
-
-=== debug.py ===
-
-# debug script for running unit tests
-
-from main import ReadDB, WriteDB
-
-def setupnew():
-    WriteDB({},'USERS.DB')
-    WriteDB({},'STOCK.DB')
-    WriteDB({'tax':0,'password':'�100�114�111�119�115�115�97�112'},'MANAGEMENT.DB')
-
+# purchase_list is modified to a format which can be parsed for bill generation
+def FinalBill(purchase_list,tax):
+    totalcost = 0
+    for i in purchase_list:
+        count = 0
+        for j in i[3]:
+            count += i[3][j]
+        costperitem = count*i[2]
+        i.append(costperitem)
+        totalcost += costperitem
+    purchase_list.append([float(totalcost),float(totalcost)*tax/100])
+    return purchase_list
