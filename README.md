@@ -1,5 +1,5 @@
 # PharmaC: Pharma Console app
-
+```
 PharmaC
 ├── Billing
 │   ├── Bill Generation
@@ -30,3 +30,4 @@ PharmaC
 └── User History
 	├── Search by Date
 	└── Search by User
+```
