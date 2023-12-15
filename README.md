@@ -1,4 +1,4 @@
-# PharmaC: Pharma Console app
+# PharmaC: Pharma Console
 ```
 PharmaC
 ├── Billing
